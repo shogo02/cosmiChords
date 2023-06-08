@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useSnapshot } from 'valtio'
 import { Note } from 'webmidi'
-import { Score } from './Score'
+import Score from './Score'
 
 function Main() {
   return (

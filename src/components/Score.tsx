@@ -2,7 +2,7 @@ import { Note } from 'webmidi'
 import abcjs from 'abcjs'
 
 
-export function Score() {
+function Score() {
 
   abcjs.renderAbc(
     'abcjs',
@@ -23,3 +23,5 @@ export function Score() {
 
   return <div id="abcjs" className="" />
 }
+
+export default Score
