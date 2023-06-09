@@ -3,7 +3,7 @@ import Score from './Score'
 
 function Main() {
 
-  const chord = new Chord(6, '6');
+  const chord = new Chord(11, 'm7b5');
 
   return (
     <div className="border border-black h-full bg-[#000730] text-cyan-200 p-4 flex flex-col items-center">

@@ -2,9 +2,8 @@ import { Accidental, NoteNumber, ChordType, ChordTypeMap, NaturalNoteName, NoteD
 
 
 
-const NATURAL_NOTE: NoteName[] = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 const CHORD_STRUCTURE_MAP: ChordTypeMap = {
-    '': { noteNumbers: [1, 5, 8], noteDegrees: ['R', 'P5', 'M3'] },
+    '': { noteNumbers: [1, 5, 8], noteDegrees: ['R', 'M3', 'P5'] },
     'm': { noteNumbers: [1, 4, 8], noteDegrees: ['R', 'm3', 'P5'] },
     '5': { noteNumbers: [1, 8], noteDegrees: ['R', 'P5'] },
     'dim': { noteNumbers: [1, 4, 7], noteDegrees: ['R', 'm3', 'b5'] },
@@ -25,15 +24,32 @@ const CHORD_STRUCTURE_MAP: ChordTypeMap = {
 }
 
 class MusicalUtil {
-    static noteNumberToName(noteNumber: NoteNumber, accidental: Accidental): NoteName {
-        const fixedNoteNumber = noteNumber > 12 ? noteNumber - 12 : noteNumber
-        
-        if([2, 4, 7, 9, 11].includes(noteNumber)) {
-            if (accidental === '#') return `${NATURAL_NOTE[fixedNoteNumber - 1]}#` as NoteName
-            if (accidental === 'b') return `${NATURAL_NOTE[fixedNoteNumber + 1]}b` as NoteName
+    private static fixeNoteNumber(noteNumber: NoteNumber): BaseNoteNumber {
+        return (noteNumber > 12 ? noteNumber - 12 : noteNumber) as BaseNoteNumber;
+    }
+
+    private static getNoteName(noteNumber: BaseNoteNumber ,accidental: Accidental) : NoteName{
+        switch(noteNumber) {
+            case 1: return 'C';
+            case 2: return accidental === '#' ? 'C#' : 'Db';
+            case 3: return 'D';
+            case 4: return accidental === '#' ? 'D#' : 'Eb';
+            case 5: return 'E';
+            case 6: return 'F';
+            case 7: return accidental === '#' ? 'F#' : 'Gb';
+            case 8: return 'G';
+            case 9: return accidental === '#' ? 'G#' : 'Ab';
+            case 10: return 'A';
+            case 11: return accidental === '#' ? 'A#' : 'Bb';
+            case 12: return 'B';
+            default: throw new Error('Invalid note number');
         }
-        console.log(fixedNoteNumber)
-        return NATURAL_NOTE[fixedNoteNumber - 1]
+    }
+
+    static noteNumberToName(noteNumber: NoteNumber, accidental: Accidental): NoteName {
+        const fixedNoteNumber = MusicalUtil.fixeNoteNumber(noteNumber);
+        const baseNote: NoteName = MusicalUtil.getNoteName(fixedNoteNumber, accidental);
+        return baseNote
     }
 
     static getNotesInChordNumber(chordType: ChordType): NoteNumber[] {
@@ -50,7 +66,6 @@ class MusicalUtil {
         notesInChordNumber.forEach((noteNumber, index) => {
             const calcNoteNumber = (rootNumber + noteNumber - 1) as BaseNoteNumber
             const noteName = MusicalUtil.noteNumberToName(calcNoteNumber, accidental)
-            console.log(noteName)
             noteNamesInChord.push(noteName)
         })
         return noteNamesInChord
