@@ -1,73 +1,16 @@
 import { Note } from 'webmidi'
 
-export type ChordType =
-  | 'power'
-  | 'major'
-  | 'minor'
-  | 'dim'
-  | 'aug'
-  | 'sus2'
-  | 'sus4'
-  | '6'
-  | 'm6'
-  | '7'
-  | 'M7'
-  | 'm7'
-  | 'mM7'
-  | 'aug7'
-  | 'dim7'
-  | '7b5'
-  | '7shp5'
-  | 'm7b5'
-  | 'm7shp5'
-
-export type ChordSettingElement = {
-  key: ChordType
-  chordAttachName: string
-  buttonDisplayName: string
+export type Accidental = '' | '#' | 'b'
+export type BaseNoteNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+export type NoteNumber = BaseNoteNumber | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23
+export type NoteDegree = 'R' | 'm2' | 'M2' | 'm3' | 'M3' | 'P4' | 'aug4' | 'b5' | 'P5' | '#5' | 'm6' | 'M6' | 'm7' | 'M7' | 
+                         'b9' | '9' | '#9' | '11' | '#11' | 'b13' | '13'
+export type NaturalNoteName = 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B'
+export type AlteredNoteName = 'C#' | 'Cb' | 'D#' | 'Db' | 'E#' | 'Eb' | 'F#' | 'Fb' | 'G#' | 'Gb' | 'A#' | 'Ab' | 'B#' | 'Bb'
+export type NoteName = NaturalNoteName | AlteredNoteName
+export type ChordType = '' | 'm' | '5' | 'dim' | 'aug' | 'sus2' | 'sus4' | '6' | 'm6' | '7' | 'M7' | 'm7' | 'aug7' | 'dim7' | '7b5' | '7#5' | 'm7b5' | 'm7#5'
+export type ChordStructure = {
+  noteNumbers: NoteNumber[],
+  noteDegrees: NoteDegree[],
 }
-export type ChordSettings = Array<ChordSettingElement>
-
-export type NotesInChordElement = {
-  key: ChordType
-  notesInChord: Array<number>
-}
-export type NotesInChordConfig = Array<NotesInChordElement>
-
-export type NoteConfig = {
-  noteId: number
-  noteName: string
-}
-export type RootNoteConfig = NoteConfig & {
-  isAbleToRootSharp?: boolean
-  isAbleToRootFlat?: boolean
-}
-
-export type Chord = {
-  chordName: string
-  notesInChord: Array<Note>
-  notesInChordDegree?: Array<number>
-}
-
-export type CorrectChord = Chord & {
-  correctNotesInChord: Array<string>
-}
-
-export type PcKeyToMidiMap = {
-  midiNumber: number
-  pcKey: string
-}
-
-export type GamePlayMode = 'tempo' | 'nextByMyself' | 'correctToNext'
-
-export type Accidental = 'natural' | 'sharp' | 'flat'
-
-export type GameType = 'random' | 'diatonic3Note' | 'diatonic4Note'
-
-export type DiatonicRoot = 'C' | 'G' | 'D' | 'A' | 'E' | 'B' | 'F#' | 'Gb' | 'Db' | 'Ab' | 'Eb' | 'Bb' | 'F'
-
-export type DiatonicMinerChord = 'Am' | 'Em' | 'Bm' | 'F#m' | 'C#m' | 'G#m' | 'D#m' | 'Abm' | 'Fm' | 'Cm' | 'Gm' | 'Dm'
-
-export type MajorScaleNote = {
-  [name in DiatonicRoot]: Array<string>
-}
+export type ChordTypeMap = { [key in ChordType]: ChordStructure }
