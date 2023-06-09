@@ -1,4 +1,3 @@
-import { Note } from 'webmidi'
 import abcjs from 'abcjs'
 
 
