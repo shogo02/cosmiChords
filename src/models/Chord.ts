@@ -1,4 +1,4 @@
-import { Accidental, NoteNumber, ChordType, NoteDegree, NoteName, BaseNoteNumber } from "../constants/type";
+import { Accidental, NoteNumber, ChordType, NoteDegree, NoteName, BaseNoteNumber } from "../customTypes/musicalTypes";
 import mu from "../utils/MusicalUtil";
 
 class Chord {

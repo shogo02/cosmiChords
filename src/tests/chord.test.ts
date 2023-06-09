@@ -1,6 +1,4 @@
-import { Accidental } from "../constants/type";
-import { ChordType } from "../constants/type";
-import { BaseNoteNumber } from "../constants/type";
+import { Accidental, BaseNoteNumber, ChordType } from "../customTypes/musicalTypes";
 import Chord from "../models/Chord";
 
 

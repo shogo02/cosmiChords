@@ -1,6 +1,11 @@
-import { Accidental, NoteNumber, ChordType, ChordTypeMap, NaturalNoteName, NoteDegree, NoteName, BaseNoteNumber } from "../constants/type";
+import { Accidental, NoteNumber, ChordType, NoteDegree, NoteName, BaseNoteNumber } from "../customTypes/musicalTypes";
 
 
+type ChordStructure = {
+    noteNumbers: NoteNumber[],
+    noteDegrees: NoteDegree[],
+  }
+type ChordTypeMap = { [key in ChordType]: ChordStructure }
 
 const CHORD_STRUCTURE_MAP: ChordTypeMap = {
     '': { noteNumbers: [1, 5, 8], noteDegrees: ['R', 'M3', 'P5'] },
