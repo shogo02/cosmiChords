@@ -6,7 +6,6 @@ type ChordStructure = {
     noteDegrees: NoteDegree[],
   }
 type ChordTypeMap = { [key in ChordType]: ChordStructure }
-
 const CHORD_STRUCTURE_MAP: ChordTypeMap = {
     '': { noteNumbers: [1, 5, 8], noteDegrees: ['R', 'M3', 'P5'] },
     'm': { noteNumbers: [1, 4, 8], noteDegrees: ['R', 'm3', 'P5'] },

@@ -1,9 +1,13 @@
 import Chord from '../models/Chord'
 import Score from './Score'
 
-function Main() {
+type Props = {
+  chord: Chord
+}
 
-  const chord = new Chord(11, 'm7b5');
+function Main(props: Props) {
+
+  const { chord } = props
 
   return (
     <div className="border border-black h-full bg-[#000730] text-cyan-200 p-4 flex flex-col items-center">

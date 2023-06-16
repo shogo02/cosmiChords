@@ -7,3 +7,4 @@ export type NaturalNoteName = 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B'
 export type AlteredNoteName = 'C#' | 'Cb' | 'D#' | 'Db' | 'E#' | 'Eb' | 'F#' | 'Fb' | 'G#' | 'Gb' | 'A#' | 'Ab' | 'B#' | 'Bb'
 export type NoteName = NaturalNoteName | AlteredNoteName
 export type ChordType = '' | 'm' | '5' | 'dim' | 'aug' | 'sus2' | 'sus4' | '6' | 'm6' | '7' | 'M7' | 'm7' | 'aug7' | 'dim7' | '7b5' | '7#5' | 'm7b5' | 'm7#5'
+export type DiatonicType = 'C' | 'G' | 'D' | 'A' | 'E' | 'B' | 'F#' | 'Gb' | 'Db' | 'Ab' | 'Eb' | 'Bb' | 'F'
