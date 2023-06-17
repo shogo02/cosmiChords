@@ -3,5 +3,7 @@
   "editor.formatOnSave": true,
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "githubIssues.issueBranchTitle": "feature/issue${issueNumber}",
+  "githubIssues.useBranchForIssues": "prompt"
 }
