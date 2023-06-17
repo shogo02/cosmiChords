@@ -47,16 +47,12 @@ class GameService {
   }
 
   private createPart() {
-    TransportService.stop()
-    TransportService.partReset()
-
     const draw = () => {
       console.log('draw!!')
     }
     const synth = SynthCreator.createSynth()
     this.transportService = new TransportService(synth, METRONOME_PATTERN, draw)
     this.transportService.createPart()
-    // TransportService.start();
   }
 
   private setPcKeyListner() {
