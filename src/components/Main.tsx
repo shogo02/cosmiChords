@@ -6,7 +6,6 @@ type Props = {
 }
 
 function Main(props: Props) {
-
   const { chord } = props
 
   return (

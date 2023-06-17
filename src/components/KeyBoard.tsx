@@ -6,7 +6,7 @@ interface KeyProps {
 }
 
 // TODO 白鍵黒鍵に分けたい
-const Key: React.FunctionComponent<KeyProps> = (props: KeyProps) => {
+function Key(props: KeyProps) {
   const { midiNumber, pcKey } = props
   const MIDI_HALF_NOTE_NUMBER = [
     1, 3, 6, 8, 10, 13, 15, 18, 20, 22, 25, 27, 30, 32, 34, 37, 39, 42, 44, 46, 49, 51, 54, 56, 58, 61, 63, 66, 68, 70, 73, 75,
@@ -37,7 +37,7 @@ function KeyBoard() {
   const keyboardOctobe = 0
   const offSet = KEYBOARD_OFFSET + keyboardOctobe * 12
   const keyBoardMaxNumber = 48
-  const keyArray = [...Array(keyBoardMaxNumber)].map((_, i) => i + offSet)
+  const keyArray = Array(keyBoardMaxNumber).map((_, i) => i + offSet)
 
   return (
     <div className="flex justify-center">

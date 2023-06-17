@@ -12,7 +12,7 @@ import Chord from './models/Chord'
 const gameService = new GameService(new ChordGenerator(), new GameState('C', ''))
 gameService.init()
 
-const App: React.FunctionComponent = () => {
+function App() {
   // useEffect(() => {}, [])
 
   return (
