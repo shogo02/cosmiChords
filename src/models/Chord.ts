@@ -1,54 +1,54 @@
-import { Accidental, NoteNumber, ChordType, NoteDegree, NoteName, BaseNoteNumber } from "../customTypes/musicalTypes";
-import mu from "../utils/MusicalUtil";
+import { Accidental, NoteNumber, ChordType, NoteDegree, NoteName, BaseNoteNumber } from '../customTypes/musicalTypes'
+import mu from '../utils/MusicalUtil'
 
 class Chord {
-    private _rootNumber: BaseNoteNumber;
+  private _rootNumber: BaseNoteNumber
 
-    private _chordType: ChordType;
-    
-    private _accidental: Accidental;
+  private _chordType: ChordType
 
-    constructor(rootNumber: BaseNoteNumber, chordType: ChordType, accidental: Accidental = '') {
-        this._rootNumber = rootNumber;
-        this._chordType = chordType;
-        this._accidental = accidental;
-    }
+  private _accidental: Accidental
 
-    get rootNumber(): BaseNoteNumber {
-        return this._rootNumber;
-    }
+  constructor(rootNumber: BaseNoteNumber, chordType: ChordType, accidental: Accidental = '') {
+    this._rootNumber = rootNumber
+    this._chordType = chordType
+    this._accidental = accidental
+  }
 
-    get chordType(): ChordType {
-        return this._chordType;
-    }
+  get rootNumber(): BaseNoteNumber {
+    return this._rootNumber
+  }
 
-    get accidental(): Accidental {
-        return this._accidental;
-    }
+  get chordType(): ChordType {
+    return this._chordType
+  }
 
-    set accidental(accidental: Accidental) {
-        this._accidental = accidental;
-    }
+  get accidental(): Accidental {
+    return this._accidental
+  }
 
-    get chordName(): string {
-        return this.rootName + this.chordType;
-    }
+  set accidental(accidental: Accidental) {
+    this._accidental = accidental
+  }
 
-    get noteNumbers(): NoteNumber[] {
-        return mu.getNotesInChordNumber(this.chordType);
-    }
+  get chordName(): string {
+    return this.rootName + this.chordType
+  }
 
-    get noteDegrees(): NoteDegree[] {
-        return mu.getNotesInChordDegree(this.chordType);
-    }
+  get noteNumbers(): NoteNumber[] {
+    return mu.getNotesInChordNumber(this.chordType)
+  }
 
-    get noteNames(): NoteName[] {
-        return mu.getNoteNamesInChord(this.rootNumber, this.chordType, this.accidental);
-    }
+  get noteDegrees(): NoteDegree[] {
+    return mu.getNotesInChordDegree(this.chordType)
+  }
 
-    get rootName(): NoteName {
-        return mu.noteNumberToName(this.rootNumber, this.accidental);
-    }
+  get noteNames(): NoteName[] {
+    return mu.getNoteNamesInChord(this.rootNumber, this.chordType, this.accidental)
+  }
+
+  get rootName(): NoteName {
+    return mu.noteNumberToName(this.rootNumber, this.accidental)
+  }
 }
 
 export default Chord

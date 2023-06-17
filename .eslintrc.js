@@ -4,33 +4,54 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    // 'plugin:react/recommended',
-    'plugin:valtio/recommended',
-    // "standard-with-typescript",
-    'react-app',
-    'react-app/jest',
     'airbnb',
-    'airbnb-typescript',
+    'airbnb/hooks', //追加
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier',
   ],
-  overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
+    project: ['./tsconfig.json'],
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['react'],
+  ignorePatterns: ['.eslintrc.js'],
   rules: {
-    'react/jsx-uses-react': 'off',
-    'react/react-in-jsx-scope': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
-    '@typescript-eslint/no-empty-function': 'off',
-    '@typescript-eslint/no-useless-constructor': 'off',
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
     'import/prefer-default-export': 'off',
-    'no-alert': 'off',
-    'react/require-default-props': 'off',
-    'jsx-a11y/click-events-have-key-events': 'off',
-    'jsx-a11y/no-static-element-interactions': 'off',
-    'no-underscore-dangle': 'off'
+    'import/extensions': [
+      'error',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
+    'react/jsx-filename-extension': [
+      'error',
+      {
+        extensions: ['.jsx', '.tsx'],
+      },
+    ],
+    'react/react-in-jsx-scope': 'off',
+    'no-void': [
+      'error',
+      {
+        allowAsStatement: true,
+      },
+    ],
+    'no-underscore-dangle': 'off',
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        paths: ['src'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
   },
 }

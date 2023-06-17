@@ -1,9 +1,9 @@
-import Chord from "../models/Chord";
+import Chord from '../models/Chord'
 
 class ChordGenerator {
-    // generateRandomChord(): Chord {
-    //     return new Chord(1, '7#5');
-    // }
+  // generateRandomChord(): Chord {
+  //     return new Chord(1, '7#5');
+  // }
 }
 
-export default ChordGenerator;
+export default ChordGenerator

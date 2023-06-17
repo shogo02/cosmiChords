@@ -1,8 +1,6 @@
 import abcjs from 'abcjs'
 
-
 function Score() {
-
   abcjs.renderAbc(
     'abcjs',
     `K:C

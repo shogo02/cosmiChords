@@ -1,6 +1,6 @@
 import { Constants } from '../constants/constants'
 
-type KeyProps = {
+interface KeyProps {
   midiNumber: number
   pcKey: string
 }
@@ -13,7 +13,7 @@ function Key(props: KeyProps) {
     78, 80, 82, 85, 87, 90, 92, 94, 97, 99, 102, 104, 106, 109, 111, 114, 116, 118, 121, 123, 126,
   ]
   let addClassName = ''
-  if (MIDI_HALF_NOTE_NUMBER.find((e) => e === midiNumber)) {
+  if (MIDI_HALF_NOTE_NUMBER.find((e) => e === midiNumber) != null) {
     addClassName += 'h-20 w-7 mx-[-14px] bg-slate-600 z-10 '
   } else {
     addClassName += 'h-36 w-10  '
@@ -34,19 +34,19 @@ function Key(props: KeyProps) {
 
 function KeyBoard() {
   const KEYBOARD_OFFSET = 36
-  const keyboardOctobe = 0;
+  const keyboardOctobe = 0
   const offSet = KEYBOARD_OFFSET + keyboardOctobe * 12
   const keyBoardMaxNumber = 48
-  const keyArray = [...Array(keyBoardMaxNumber)].map((_, i) => i + offSet)
+  const keyArray = Array(keyBoardMaxNumber).map((_, i) => i + offSet)
 
   return (
     <div className="flex justify-center">
       <div className="h-36 w-3/4 flex justify-center">
         {keyArray.map((e) => (
-            <div className="col-span-1" key={e}>
-              <Key midiNumber={e} pcKey="" />
-            </div>
-          ))}
+          <div className="col-span-1" key={e}>
+            <Key midiNumber={e} pcKey="" />
+          </div>
+        ))}
       </div>
     </div>
   )
