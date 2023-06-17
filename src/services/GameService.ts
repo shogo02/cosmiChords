@@ -1,6 +1,7 @@
 import SynthCreator from '../utils/SynthCreator'
 import ChordGenerator from './ChordGenerator'
 import GameState from './GameState'
+import PcKeyService from './PcKeyService'
 import TransportService, { Pattern } from './TransportService'
 
 const METRONOME_PATTERN: Pattern = [
@@ -11,19 +12,38 @@ const METRONOME_PATTERN: Pattern = [
 ]
 
 class GameService {
-  private gameState: GameState
-
   private chordGenerator: ChordGenerator
 
-  private transportService?: TransportService
+  private gameState: GameState
 
-  constructor(codeGenerator: ChordGenerator, gameState: GameState) {
-    this.chordGenerator = codeGenerator
+  private transportService: TransportService
+
+  private pcKeyService: PcKeyService
+
+  private constructor(
+    chordGenerator: ChordGenerator,
+    gameState: GameState,
+    transportService: TransportService,
+    pcKeyService: PcKeyService
+  ) {
+    this.chordGenerator = chordGenerator
     this.gameState = gameState
+    this.transportService = transportService
+    this.pcKeyService = pcKeyService
+  }
+
+  static createGameService() {
+    return new GameService(
+      new ChordGenerator(),
+      new GameState('C', ''),
+      new TransportService(SynthCreator.createSynth(), METRONOME_PATTERN),
+      new PcKeyService()
+    )
   }
 
   init() {
     this.createPart()
+    this.setPcKeyListner()
   }
 
   private createPart() {
@@ -37,6 +57,16 @@ class GameService {
     this.transportService = new TransportService(synth, METRONOME_PATTERN, draw)
     this.transportService.createPart()
     // TransportService.start();
+  }
+
+  private setPcKeyListner() {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    // this.pcKeyService.setKeySpaceAction(() => TransportService.stop)
+    this.pcKeyService.setKeySpaceAction(() => console.log('pressSpace'))
+  }
+
+  getPcKeyService() {
+    return this.pcKeyService
   }
 }
 

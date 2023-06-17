@@ -1,20 +1,20 @@
-import { useEffect } from 'react'
 import KeyBoard from './components/KeyBoard'
 import Main from './components/Main'
 import Mixer from './components/Mixer'
 import Nob from './components/Nob'
 import Pad from './components/Pad'
 import GameService from './services/GameService'
-import ChordGenerator from './services/ChordGenerator'
-import GameState from './services/GameState'
 import Chord from './models/Chord'
+import PcKeyListener from './components/PcKeyListner'
+import ViewHandler from './handlers/ViewHandler'
 
-const gameService = new GameService(new ChordGenerator(), new GameState('C', ''))
+const gameService = GameService.createGameService()
+const viewHandler = new ViewHandler(gameService)
 gameService.init()
 
-function App() {
-  // useEffect(() => {}, [])
+const { keyDownHandler, keyUpHandler } = viewHandler.getPcKeyListnerProps()
 
+function App() {
   return (
     <div className="h-screen bg-[#dedede] select-none font-mono">
       <div className="flex flex-row justify-between h-3/4">
@@ -36,7 +36,7 @@ function App() {
       <div className="h-1/4 border border-black">
         <KeyBoard />
       </div>
-      {/* <PcKeyController /> */}
+      <PcKeyListener keyDownHandler={keyDownHandler} keyUpHandler={keyUpHandler} />
     </div>
   )
 }

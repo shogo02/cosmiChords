@@ -1,5 +1,3 @@
-import { Constants } from '../constants/constants'
-
 interface KeyProps {
   midiNumber: number
   pcKey: string
@@ -37,7 +35,7 @@ function KeyBoard() {
   const keyboardOctobe = 0
   const offSet = KEYBOARD_OFFSET + keyboardOctobe * 12
   const keyBoardMaxNumber = 48
-  const keyArray = Array(keyBoardMaxNumber).map((_, i) => i + offSet)
+  const keyArray = [...(Array(keyBoardMaxNumber) as number[])].map((_, i) => i + offSet)
 
   return (
     <div className="flex justify-center">
