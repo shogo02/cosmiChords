@@ -6,6 +6,10 @@ class GameStates {
   get currentChord(): Chord | undefined {
     return this._currentChord
   }
+
+  set currentChord(chord: Chord | undefined) {
+    this._currentChord = chord
+  }
 }
 
 export default GameStates

@@ -3,6 +3,7 @@ import ChordGenerator from './ChordGenerator'
 import GameSettings from '../models/GameSettings'
 import PcKeyService from './PcKeyService'
 import TransportService, { Pattern } from './TransportService'
+import GameStates from '../models/GameStates'
 
 const METRONOME_PATTERN: Pattern = [
   { time: 0, note: 'C6', velocity: 1 },
@@ -12,9 +13,11 @@ const METRONOME_PATTERN: Pattern = [
 ]
 
 class GameService {
-  private chordGenerator: ChordGenerator
+  private chordGenerator: ChordGenerator // TODO 今のところインスタンスの使い道がない
 
-  private gameState: GameSettings
+  private gameSettings: GameSettings
+
+  private gameStates: GameStates
 
   private transportService: TransportService
 
@@ -22,22 +25,25 @@ class GameService {
 
   private constructor(
     chordGenerator: ChordGenerator,
-    gameState: GameSettings,
+    gameSettings: GameSettings,
+    gameStates: GameStates,
     transportService: TransportService,
     pcKeyService: PcKeyService
   ) {
     this.chordGenerator = chordGenerator
-    this.gameState = gameState
+    this.gameSettings = gameSettings
+    this.gameStates = gameStates
     this.transportService = transportService
     this.pcKeyService = pcKeyService
   }
 
   static createGameService() {
-    const gameSettings = new GameSettings('C', '')
-    const chordGenerator = new ChordGenerator(gameSettings)
+    const gameSettings = new GameSettings('F', '')
+    const gameState = new GameStates()
+    const chordGenerator = new ChordGenerator()
     const transportService = new TransportService(SynthCreator.createSynth(), METRONOME_PATTERN)
     const pcKeyService = new PcKeyService()
-    return new GameService(chordGenerator, gameSettings, transportService, pcKeyService)
+    return new GameService(chordGenerator, gameSettings, gameState, transportService, pcKeyService)
   }
 
   init() {
@@ -46,12 +52,13 @@ class GameService {
   }
 
   gameStart() {
-    this.chordGenerator.generateRandomChord()
+    this.generateChord()
   }
 
   private createPart() {
     const draw = () => {
       console.log('draw!!')
+      this.generateChord()
     }
     const synth = SynthCreator.createSynth()
     this.transportService = new TransportService(synth, METRONOME_PATTERN, draw)
@@ -61,7 +68,16 @@ class GameService {
   private setPcKeyListner() {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     // this.pcKeyService.setKeySpaceAction(() => TransportService.stop)
-    this.pcKeyService.setKeySpaceAction(() => console.log('pressSpace'))
+    this.pcKeyService.setKeySpaceAction(() => {
+      TransportService.toggleTransport()
+      console.log('pressSpace')
+    })
+  }
+
+  private generateChord() {
+    const { diatonicKey, accidental } = this.gameSettings
+    this.gameStates.currentChord = ChordGenerator.generateRandomChord(diatonicKey, accidental)
+    console.log(this.gameStates.currentChord)
   }
 
   getPcKeyService() {

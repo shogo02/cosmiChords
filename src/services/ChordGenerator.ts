@@ -1,23 +1,15 @@
 import { MAJOR_SCALE } from '../constants/constants'
+import { Accidental, BaseNoteNumber, DiatonicKey } from '../customTypes/musicalTypes'
 import Chord from '../models/Chord'
 import GameSettings from '../models/GameSettings'
-import Util from '../utils/Util'
+import mu from '../utils/MusicalUtil'
 
 class ChordGenerator {
-  private gameSettings: GameSettings
-
-  constructor(gameSettings: GameSettings) {
-    this.gameSettings = gameSettings
-  }
-
-  generateRandomChord(): Chord {
-    const chordDegree = Util.getRandomArrayElement(MAJOR_SCALE)
-
-    return new Chord(1, '7#5', this.getAccidental())
-  }
-
-  private getAccidental() {
-    return this.gameSettings.accidental
+  static generateRandomChord(diatonicKey: DiatonicKey, accidental: Accidental): Chord {
+    const majorScaleRoot = mu.getRandomMajorScaleRoot() - 1
+    const keyNoteNumber = mu.getNoteNumberFromDatonicKey(diatonicKey)
+    const rootNumber = (keyNoteNumber + majorScaleRoot) as BaseNoteNumber
+    return new Chord(rootNumber, '7', accidental)
   }
 }
 

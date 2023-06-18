@@ -1,12 +1,6 @@
-import {
-  Accidental,
-  NoteNumber,
-  ChordType,
-  NoteDegree,
-  NoteName,
-  BaseNoteNumber,
-  DiatonicKeyType,
-} from '../customTypes/musicalTypes'
+import { MAJOR_SCALE } from '../constants/constants'
+import { Accidental, NoteNumber, ChordType, NoteDegree, NoteName, BaseNoteNumber, DiatonicKey } from '../customTypes/musicalTypes'
+import Util from './Util'
 
 type ChordStructure = {
   noteNumbers: NoteNumber[]
@@ -32,22 +26,6 @@ const CHORD_STRUCTURE_MAP: ChordTypeMap = {
   '7#5': { noteNumbers: [1, 5, 9, 11], noteDegrees: ['R', 'M3', '#5', 'm7'] },
   m7b5: { noteNumbers: [1, 4, 7, 11], noteDegrees: ['R', 'm3', 'b5', 'm7'] },
   'm7#5': { noteNumbers: [1, 4, 9, 11], noteDegrees: ['R', 'm3', '#5', 'm7'] },
-}
-
-export const INTERVALS: { [key in DiatonicKeyType]: number } = {
-  Gb: -6,
-  G: -5,
-  Ab: -4,
-  A: -3,
-  Bb: -2,
-  B: -1,
-  C: 0,
-  Db: 1,
-  D: 2,
-  Eb: 3,
-  E: 4,
-  F: 5,
-  'F#': 6,
 }
 
 class MusicalUtil {
@@ -109,6 +87,26 @@ class MusicalUtil {
       noteNamesInChord.push(noteName)
     })
     return noteNamesInChord
+  }
+
+  static getRandomMajorScaleRoot() {
+    return Util.getRandomArrayElement(MAJOR_SCALE)
+  }
+
+  static getNoteNumberFromDatonicKey(diatonicKey: DiatonicKey) {
+    if (diatonicKey === 'C') return 1
+    if (diatonicKey === 'Db') return 2
+    if (diatonicKey === 'D') return 3
+    if (diatonicKey === 'Eb') return 4
+    if (diatonicKey === 'E') return 5
+    if (diatonicKey === 'F') return 6
+    if (diatonicKey === 'F#') return 7
+    if (diatonicKey === 'G') return 8
+    if (diatonicKey === 'Ab') return 9
+    if (diatonicKey === 'A') return 10
+    if (diatonicKey === 'Bb') return 11
+    if (diatonicKey === 'B') return 12
+    throw new Error('Invalid diatonic key')
   }
 }
 
