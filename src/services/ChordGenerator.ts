@@ -1,7 +1,5 @@
-import { MAJOR_SCALE } from '../constants/constants'
 import { Accidental, BaseNoteNumber, DiatonicKey } from '../customTypes/musicalTypes'
 import Chord from '../models/Chord'
-import GameSettings from '../models/GameSettings'
 import mu from '../utils/MusicalUtil'
 
 class ChordGenerator {

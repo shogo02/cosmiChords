@@ -1,6 +1,3 @@
-// import { ToneAudioNode } from 'tone';
-// import * as Tone from 'tone'
-
 import { PolySynth } from 'tone'
 
 class SynthService {

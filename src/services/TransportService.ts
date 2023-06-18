@@ -1,4 +1,3 @@
-import { type } from 'os'
 import { Draw, Master, Part, Synth, Transport } from 'tone'
 
 export type Pattern = { time: string | number; note: string; velocity: number }[]
