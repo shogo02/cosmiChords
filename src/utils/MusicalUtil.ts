@@ -1,4 +1,6 @@
-import { Accidental, NoteNumber, ChordType, NoteDegree, NoteName, BaseNoteNumber } from '../customTypes/musicalTypes'
+import { MAJOR_SCALE } from '../constants/constants'
+import { Accidental, NoteNumber, ChordType, NoteDegree, NoteName, BaseNoteNumber, DiatonicKey } from '../customTypes/musicalTypes'
+import Util from './Util'
 
 type ChordStructure = {
   noteNumbers: NoteNumber[]
@@ -85,6 +87,26 @@ class MusicalUtil {
       noteNamesInChord.push(noteName)
     })
     return noteNamesInChord
+  }
+
+  static getRandomMajorScaleRoot() {
+    return Util.getRandomArrayElement(MAJOR_SCALE)
+  }
+
+  static getNoteNumberFromDatonicKey(diatonicKey: DiatonicKey) {
+    if (diatonicKey === 'C') return 1
+    if (diatonicKey === 'Db') return 2
+    if (diatonicKey === 'D') return 3
+    if (diatonicKey === 'Eb') return 4
+    if (diatonicKey === 'E') return 5
+    if (diatonicKey === 'F') return 6
+    if (diatonicKey === 'F#') return 7
+    if (diatonicKey === 'G') return 8
+    if (diatonicKey === 'Ab') return 9
+    if (diatonicKey === 'A') return 10
+    if (diatonicKey === 'Bb') return 11
+    if (diatonicKey === 'B') return 12
+    throw new Error('Invalid diatonic key')
   }
 }
 

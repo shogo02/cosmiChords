@@ -1,12 +1,12 @@
-import KeyBoard from './components/KeyBoard'
-import Main from './components/Main'
-import Mixer from './components/Mixer'
-import Nob from './components/Nob'
-import Pad from './components/Pad'
-import GameService from './services/GameService'
-import Chord from './models/Chord'
-import PcKeyListener from './components/PcKeyListner'
-import ViewHandler from './handlers/ViewHandler'
+import KeyBoard from './KeyBoard'
+import Main from './Main'
+import Mixer from './Mixer'
+import Nob from './Nob'
+import Pad from './Pad'
+import GameService from '../services/GameService'
+import Chord from '../models/Chord'
+import PcKeyListener from './PcKeyListner'
+import ViewHandler from '../handlers/ViewHandler'
 
 const gameService = GameService.createGameService()
 const viewHandler = new ViewHandler(gameService)

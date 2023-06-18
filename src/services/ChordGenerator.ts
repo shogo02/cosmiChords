@@ -1,9 +1,14 @@
+import { Accidental, BaseNoteNumber, DiatonicKey } from '../customTypes/musicalTypes'
 import Chord from '../models/Chord'
+import mu from '../utils/MusicalUtil'
 
 class ChordGenerator {
-  // generateRandomChord(): Chord {
-  //     return new Chord(1, '7#5');
-  // }
+  static generateRandomChord(diatonicKey: DiatonicKey, accidental: Accidental): Chord {
+    const majorScaleRoot = mu.getRandomMajorScaleRoot() - 1
+    const keyNoteNumber = mu.getNoteNumberFromDatonicKey(diatonicKey)
+    const rootNumber = (keyNoteNumber + majorScaleRoot) as BaseNoteNumber
+    return new Chord(rootNumber, '7', accidental)
+  }
 }
 
 export default ChordGenerator

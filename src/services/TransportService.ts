@@ -1,4 +1,3 @@
-import { type } from 'os'
 import { Draw, Master, Part, Synth, Transport } from 'tone'
 
 export type Pattern = { time: string | number; note: string; velocity: number }[]
@@ -18,6 +17,8 @@ class TransportService {
   }
 
   createPart() {
+    TransportService.stop()
+    TransportService.partReset()
     const part = new Part((time, value) => {
       this.synth.triggerAttackRelease(value.note, '0.1', time, value.velocity)
       if (this.draw) Draw.schedule(this.draw, time)
