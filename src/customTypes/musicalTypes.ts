@@ -45,4 +45,4 @@ export type ChordType =
   | '7#5'
   | 'm7b5'
   | 'm7#5'
-export type DiatonicType = 'C' | 'G' | 'D' | 'A' | 'E' | 'B' | 'F#' | 'Gb' | 'Db' | 'Ab' | 'Eb' | 'Bb' | 'F'
+export type DiatonicKeyType = 'C' | 'G' | 'D' | 'A' | 'E' | 'B' | 'F#' | 'Gb' | 'Db' | 'Ab' | 'Eb' | 'Bb' | 'F'

@@ -1,6 +1,6 @@
 import SynthCreator from '../utils/SynthCreator'
 import ChordGenerator from './ChordGenerator'
-import GameState from './GameState'
+import GameSettings from '../models/GameSettings'
 import PcKeyService from './PcKeyService'
 import TransportService, { Pattern } from './TransportService'
 
@@ -14,7 +14,7 @@ const METRONOME_PATTERN: Pattern = [
 class GameService {
   private chordGenerator: ChordGenerator
 
-  private gameState: GameState
+  private gameState: GameSettings
 
   private transportService: TransportService
 
@@ -22,7 +22,7 @@ class GameService {
 
   private constructor(
     chordGenerator: ChordGenerator,
-    gameState: GameState,
+    gameState: GameSettings,
     transportService: TransportService,
     pcKeyService: PcKeyService
   ) {
@@ -33,17 +33,20 @@ class GameService {
   }
 
   static createGameService() {
-    return new GameService(
-      new ChordGenerator(),
-      new GameState('C', ''),
-      new TransportService(SynthCreator.createSynth(), METRONOME_PATTERN),
-      new PcKeyService()
-    )
+    const gameSettings = new GameSettings('C', '')
+    const chordGenerator = new ChordGenerator(gameSettings)
+    const transportService = new TransportService(SynthCreator.createSynth(), METRONOME_PATTERN)
+    const pcKeyService = new PcKeyService()
+    return new GameService(chordGenerator, gameSettings, transportService, pcKeyService)
   }
 
   init() {
     this.createPart()
     this.setPcKeyListner()
+  }
+
+  gameStart() {
+    this.chordGenerator.generateRandomChord()
   }
 
   private createPart() {

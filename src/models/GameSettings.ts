@@ -1,20 +1,20 @@
-import { Accidental, DiatonicType } from '../customTypes/musicalTypes'
+import { Accidental, DiatonicKeyType } from '../customTypes/musicalTypes'
 
-class GameState {
-  private _selectedDiatonic: DiatonicType
+class GameSettings {
+  private _selectedDiatonic: DiatonicKeyType
 
   private _accidental: Accidental
 
-  constructor(selectedDiatonic: DiatonicType, accidental: Accidental) {
+  constructor(selectedDiatonic: DiatonicKeyType, accidental: Accidental) {
     this._selectedDiatonic = selectedDiatonic
     this._accidental = accidental
   }
 
-  get selectedDiatonic(): DiatonicType {
+  get selectedDiatonic(): DiatonicKeyType {
     return this._selectedDiatonic
   }
 
-  set selectedDiatonic(selectedDiatonic: DiatonicType) {
+  set selectedDiatonic(selectedDiatonic: DiatonicKeyType) {
     this._selectedDiatonic = selectedDiatonic
   }
 
@@ -27,4 +27,4 @@ class GameState {
   }
 }
 
-export default GameState
+export default GameSettings
