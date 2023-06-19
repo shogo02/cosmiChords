@@ -34,34 +34,19 @@ class MusicalUtil {
   }
 
   private static getNoteName(noteNumber: BaseNoteNumber, accidental: Accidental): NoteName {
-    switch (noteNumber) {
-      case 1:
-        return 'C'
-      case 2:
-        return accidental === '#' ? 'C#' : 'Db'
-      case 3:
-        return 'D'
-      case 4:
-        return accidental === '#' ? 'D#' : 'Eb'
-      case 5:
-        return 'E'
-      case 6:
-        return 'F'
-      case 7:
-        return accidental === '#' ? 'F#' : 'Gb'
-      case 8:
-        return 'G'
-      case 9:
-        return accidental === '#' ? 'G#' : 'Ab'
-      case 10:
-        return 'A'
-      case 11:
-        return accidental === '#' ? 'A#' : 'Bb'
-      case 12:
-        return 'B'
-      default:
-        throw new Error('Invalid note number')
-    }
+    if (noteNumber === 1) return 'C'
+    if (noteNumber === 2) return accidental === '#' ? 'C#' : 'Db'
+    if (noteNumber === 3) return 'D'
+    if (noteNumber === 4) return accidental === '#' ? 'D#' : 'Eb'
+    if (noteNumber === 5) return 'E'
+    if (noteNumber === 6) return 'F'
+    if (noteNumber === 7) return accidental === '#' ? 'F#' : 'Gb'
+    if (noteNumber === 8) return 'G'
+    if (noteNumber === 9) return accidental === '#' ? 'G#' : 'Ab'
+    if (noteNumber === 10) return 'A'
+    if (noteNumber === 11) return accidental === '#' ? 'A#' : 'Bb'
+    if (noteNumber === 12) return 'B'
+    throw new Error(`Invalid note number: ${noteNumber as number}`)
   }
 
   static noteNumberToName(noteNumber: NoteNumber, accidental: Accidental): NoteName {
