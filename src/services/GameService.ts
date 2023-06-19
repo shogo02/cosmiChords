@@ -4,6 +4,7 @@ import GameSettings from '../models/GameSettings'
 import PcKeyService from './PcKeyService'
 import TransportService, { Pattern } from './TransportService'
 import GameStates from '../models/GameStates'
+import Chord from '../models/Chord'
 
 const METRONOME_PATTERN: Pattern = [
   { time: 0, note: 'C6', velocity: 1 },
@@ -23,6 +24,8 @@ class GameService {
 
   private pcKeyService: PcKeyService
 
+  public setChordView: React.Dispatch<React.SetStateAction<Chord | undefined>> | undefined
+
   private constructor(
     chordGenerator: ChordGenerator,
     gameSettings: GameSettings,
@@ -38,7 +41,7 @@ class GameService {
   }
 
   static createGameService() {
-    const gameSettings = new GameSettings('F', '')
+    const gameSettings = new GameSettings('C', '')
     const gameState = new GameStates()
     const chordGenerator = new ChordGenerator()
     const transportService = new TransportService(SynthCreator.createSynth(), METRONOME_PATTERN)
@@ -57,8 +60,8 @@ class GameService {
 
   private createPart() {
     const draw = () => {
-      console.log('draw!!')
       this.generateChord()
+      this.setChordView?.(this.gameStates.currentChord)
     }
     const synth = SynthCreator.createSynth()
     this.transportService = new TransportService(synth, METRONOME_PATTERN, draw)
