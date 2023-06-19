@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Chord from '../models/Chord'
 import Score from './Score'
 
@@ -6,12 +5,7 @@ type Props = {
   chord: Chord | undefined
 }
 
-function Main(props: Props) {
-  const { chord } = props
-
-  // useState
-  // const [chord, setChord] = useState<Chord>()
-
+function Main({ chord }: Props) {
   return (
     <div className="border border-black h-full bg-[#000730] text-cyan-200 p-4 flex flex-col items-center">
       <div className="text-4xl">1</div>

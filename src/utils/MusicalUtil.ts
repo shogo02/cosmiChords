@@ -1,4 +1,3 @@
-import { MAJOR_SCALE } from '../constants/constants'
 import { Accidental, NoteNumber, ChordType, NoteDegree, NoteName, BaseNoteNumber, DiatonicKey } from '../customTypes/musicalTypes'
 import Util from './Util'
 
@@ -27,6 +26,8 @@ const CHORD_STRUCTURE_MAP: ChordTypeMap = {
   m7b5: { noteNumbers: [1, 4, 7, 11], noteDegrees: ['R', 'm3', 'b5', 'm7'] },
   'm7#5': { noteNumbers: [1, 4, 9, 11], noteDegrees: ['R', 'm3', '#5', 'm7'] },
 }
+
+const MAJOR_SCALE: BaseNoteNumber[] = [1, 3, 5, 6, 8, 10, 12]
 
 class MusicalUtil {
   private static fixeNoteNumber(noteNumber: NoteNumber): BaseNoteNumber {
