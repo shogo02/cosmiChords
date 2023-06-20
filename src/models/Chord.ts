@@ -1,20 +1,20 @@
-import { Accidental, NoteNumber, ChordType, NoteDegree, NoteName, BaseNoteNumber } from '../customTypes/musicalTypes'
+import { Accidental, NoteNumber, ChordType, NoteDegree, NoteName } from '../customTypes/musicalTypes'
 import mu from '../utils/MusicalUtil'
 
 class Chord {
-  private _rootNumber: BaseNoteNumber
+  private _rootNumber: NoteNumber
 
   private _chordType: ChordType
 
   private _accidental: Accidental
 
-  constructor(rootNumber: BaseNoteNumber, chordType: ChordType, accidental: Accidental = '') {
+  constructor(rootNumber: NoteNumber, chordType: ChordType, accidental: Accidental = '') {
     this._rootNumber = rootNumber
     this._chordType = chordType
     this._accidental = accidental
   }
 
-  get rootNumber(): BaseNoteNumber {
+  get rootNumber(): NoteNumber {
     return this._rootNumber
   }
 

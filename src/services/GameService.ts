@@ -41,7 +41,7 @@ class GameService {
   }
 
   static createGameService() {
-    const gameSettings = new GameSettings('C', '')
+    const gameSettings = new GameSettings(7, '3note', 'b')
     const gameState = new GameStates()
     const chordGenerator = new ChordGenerator()
     const transportService = new TransportService(SynthCreator.createSynth(), METRONOME_PATTERN)
@@ -78,8 +78,9 @@ class GameService {
   }
 
   private generateChord() {
-    const { diatonicKey, accidental } = this.gameSettings
-    this.gameStates.currentChord = ChordGenerator.generateRandomChord(diatonicKey, accidental)
+    const { diatonicKey, diatonicType, accidental } = this.gameSettings
+    this.chordGenerator.createDiatonicValidChords(diatonicKey, diatonicType, accidental)
+    this.gameStates.currentChord = this.chordGenerator.getRandomChord()
     console.log(this.gameStates.currentChord)
   }
 

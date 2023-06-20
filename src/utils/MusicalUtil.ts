@@ -1,5 +1,12 @@
-import { Accidental, NoteNumber, ChordType, NoteDegree, NoteName, BaseNoteNumber, DiatonicKey } from '../customTypes/musicalTypes'
-import Util from './Util'
+import {
+  Accidental,
+  NoteNumber,
+  ChordType,
+  NoteDegree,
+  NoteName,
+  BaseNoteNumber,
+  DiatonicType,
+} from '../customTypes/musicalTypes'
 
 type ChordStructure = {
   noteNumbers: NoteNumber[]
@@ -9,6 +16,7 @@ type ChordTypeMap = { [key in ChordType]: ChordStructure }
 const CHORD_STRUCTURE_MAP: ChordTypeMap = {
   '': { noteNumbers: [1, 5, 8], noteDegrees: ['R', 'M3', 'P5'] },
   m: { noteNumbers: [1, 4, 8], noteDegrees: ['R', 'm3', 'P5'] },
+  mb5: { noteNumbers: [1, 4, 7], noteDegrees: ['R', 'm3', 'b5'] },
   '5': { noteNumbers: [1, 8], noteDegrees: ['R', 'P5'] },
   dim: { noteNumbers: [1, 4, 7], noteDegrees: ['R', 'm3', 'b5'] },
   aug: { noteNumbers: [1, 5, 9], noteDegrees: ['R', 'P5', '#5'] },
@@ -27,26 +35,26 @@ const CHORD_STRUCTURE_MAP: ChordTypeMap = {
   'm7#5': { noteNumbers: [1, 4, 9, 11], noteDegrees: ['R', 'm3', '#5', 'm7'] },
 }
 
-const MAJOR_SCALE: BaseNoteNumber[] = [1, 3, 5, 6, 8, 10, 12]
+const MAJOR_SCALE = [1, 3, 5, 6, 8, 10, 12]
 
 class MusicalUtil {
   private static fixeNoteNumber(noteNumber: NoteNumber): BaseNoteNumber {
     return (noteNumber > 12 ? noteNumber - 12 : noteNumber) as BaseNoteNumber
   }
 
-  private static getNoteName(noteNumber: BaseNoteNumber, accidental: Accidental): NoteName {
-    if (noteNumber === 1) return 'C'
-    if (noteNumber === 2) return accidental === '#' ? 'C#' : 'Db'
-    if (noteNumber === 3) return 'D'
-    if (noteNumber === 4) return accidental === '#' ? 'D#' : 'Eb'
-    if (noteNumber === 5) return 'E'
-    if (noteNumber === 6) return 'F'
-    if (noteNumber === 7) return accidental === '#' ? 'F#' : 'Gb'
-    if (noteNumber === 8) return 'G'
-    if (noteNumber === 9) return accidental === '#' ? 'G#' : 'Ab'
-    if (noteNumber === 10) return 'A'
-    if (noteNumber === 11) return accidental === '#' ? 'A#' : 'Bb'
-    if (noteNumber === 12) return 'B'
+  private static getNoteName(noteNumber: NoteNumber, accidental: Accidental): NoteName {
+    if (noteNumber === 1 || noteNumber === 13) return 'C'
+    if (noteNumber === 2 || noteNumber === 14) return accidental === '#' ? 'C#' : 'Db'
+    if (noteNumber === 3 || noteNumber === 15) return 'D'
+    if (noteNumber === 4 || noteNumber === 16) return accidental === '#' ? 'D#' : 'Eb'
+    if (noteNumber === 5 || noteNumber === 17) return 'E'
+    if (noteNumber === 6 || noteNumber === 18) return 'F'
+    if (noteNumber === 7 || noteNumber === 19) return accidental === '#' ? 'F#' : 'Gb'
+    if (noteNumber === 8 || noteNumber === 20) return 'G'
+    if (noteNumber === 9 || noteNumber === 21) return accidental === '#' ? 'G#' : 'Ab'
+    if (noteNumber === 10 || noteNumber === 22) return 'A'
+    if (noteNumber === 11 || noteNumber === 23) return accidental === '#' ? 'A#' : 'Bb'
+    if (noteNumber === 12 || noteNumber === 24) return 'B'
     throw new Error(`Invalid note number: ${noteNumber as number}`)
   }
 
@@ -64,35 +72,30 @@ class MusicalUtil {
     return CHORD_STRUCTURE_MAP[`${chordType}`].noteDegrees
   }
 
-  static getNoteNamesInChord(rootNumber: BaseNoteNumber, chordType: ChordType, accidental: Accidental) {
+  static getNoteNamesInChord(rootNumber: NoteNumber, chordType: ChordType, accidental: Accidental) {
     const notesInChordNumber = MusicalUtil.getNotesInChordNumber(chordType)
     const noteNamesInChord: NoteName[] = []
-    notesInChordNumber.forEach((noteNumber, index) => {
-      const calcNoteNumber = (rootNumber + noteNumber - 1) as BaseNoteNumber
+    notesInChordNumber.forEach((noteNumber) => {
+      const calcNoteNumber = MusicalUtil.fixeNoteNumber((rootNumber + noteNumber - 1) as NoteNumber)
       const noteName = MusicalUtil.noteNumberToName(calcNoteNumber, accidental)
       noteNamesInChord.push(noteName)
     })
     return noteNamesInChord
   }
 
-  static getRandomMajorScaleRoot() {
-    return Util.getRandomArrayElement(MAJOR_SCALE)
+  static getChordTypeFromDegreeNum(degree: number, type: DiatonicType): ChordType {
+    if (degree === 1) return type === '3note' ? '' : 'M7'
+    if (degree === 2) return type === '3note' ? 'm' : 'm7'
+    if (degree === 3) return type === '3note' ? 'm' : 'm7'
+    if (degree === 4) return type === '3note' ? '' : 'M7'
+    if (degree === 5) return type === '3note' ? '' : 'M7'
+    if (degree === 6) return type === '3note' ? 'm' : 'm7'
+    if (degree === 7) return type === '3note' ? 'mb5' : 'm7b5'
+    throw new Error(`Invalid degree: ${degree}`)
   }
 
-  static getNoteNumberFromDatonicKey(diatonicKey: DiatonicKey) {
-    if (diatonicKey === 'C') return 1
-    if (diatonicKey === 'Db') return 2
-    if (diatonicKey === 'D') return 3
-    if (diatonicKey === 'Eb') return 4
-    if (diatonicKey === 'E') return 5
-    if (diatonicKey === 'F') return 6
-    if (diatonicKey === 'F#') return 7
-    if (diatonicKey === 'G') return 8
-    if (diatonicKey === 'Ab') return 9
-    if (diatonicKey === 'A') return 10
-    if (diatonicKey === 'Bb') return 11
-    if (diatonicKey === 'B') return 12
-    throw new Error('Invalid diatonic key')
+  static getMajorScale() {
+    return MAJOR_SCALE
   }
 }
 
