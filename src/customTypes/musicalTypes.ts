@@ -30,6 +30,7 @@ export type ChordType =
   | ''
   | 'm'
   | '5'
+  | 'mb5'
   | 'dim'
   | 'aug'
   | 'sus2'
@@ -45,4 +46,6 @@ export type ChordType =
   | '7#5'
   | 'm7b5'
   | 'm7#5'
+export type ChordDegree = 1 | 2 | 3 | 4 | 5 | 6 | 7
 export type DiatonicKey = 'C' | 'G' | 'D' | 'A' | 'E' | 'B' | 'F#' | 'Db' | 'Ab' | 'Eb' | 'Bb' | 'F'
+export type DiatonicType = '3note' | '4note'
