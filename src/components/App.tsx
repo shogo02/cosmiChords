@@ -18,6 +18,7 @@ function App() {
 
   useEffect(() => {
     gameService.setChordView = setChord
+    gameService.gameStart()
   }, [])
 
   const { keyDownHandler, keyUpHandler } = viewHandler.getPcKeyListnerProps()

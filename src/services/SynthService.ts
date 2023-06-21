@@ -7,13 +7,13 @@ class SynthService {
     this.synth = synth
   }
 
-  noteOn(identifier: string) {
-    this.synth.triggerRelease(identifier)
-    this.synth.triggerAttack(identifier)
+  noteOn(noteName: string) {
+    this.synth.triggerRelease(noteName)
+    this.synth.triggerAttack(noteName)
   }
 
-  noteOff(identifier: string) {
-    this.synth.triggerRelease(identifier)
+  noteOff(noteName: string) {
+    this.synth.triggerRelease(noteName)
   }
 }
 
