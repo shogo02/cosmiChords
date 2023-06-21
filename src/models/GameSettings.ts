@@ -1,23 +1,25 @@
-import { Accidental, BaseNoteNumber, DiatonicType } from '../customTypes/musicalTypes'
+import { Accidental, DiatonicType } from '../customTypes/musicalTypes'
 
 class GameSettings {
-  private _diatonicKey: BaseNoteNumber
+  private _diatonicKey: number
 
   private _diatonicType: DiatonicType
 
   private _accidental: Accidental
 
-  constructor(diatonicKey: BaseNoteNumber, diatonicType: DiatonicType, accidental: Accidental) {
+  constructor(diatonicKey: number, diatonicType: DiatonicType, accidental: Accidental) {
+    GameSettings.validateDiatonicKey(diatonicKey)
     this._diatonicKey = diatonicKey
     this._diatonicType = diatonicType
     this._accidental = accidental
   }
 
-  get diatonicKey(): BaseNoteNumber {
+  get diatonicKey(): number {
     return this._diatonicKey
   }
 
-  set diatonicKey(diatonicKey: BaseNoteNumber) {
+  set diatonicKey(diatonicKey: number) {
+    GameSettings.validateDiatonicKey(diatonicKey)
     this._diatonicKey = diatonicKey
   }
 
@@ -35,6 +37,13 @@ class GameSettings {
 
   set accidental(accidental: Accidental) {
     this._accidental = accidental
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  private static validateDiatonicKey(diatonicKey: number): void {
+    if (diatonicKey < 1 || diatonicKey > 12) {
+      throw new Error('Number value must be between 1 and 12')
+    }
   }
 }
 

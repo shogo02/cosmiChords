@@ -1,48 +1,41 @@
-import {
-  Accidental,
-  NoteNumber,
-  ChordType,
-  NoteDegree,
-  NoteName,
-  BaseNoteNumber,
-  DiatonicType,
-} from '../customTypes/musicalTypes'
+import Constants from '../constants/constants'
+import { Accidental, ChordType, NoteName, DiatonicType } from '../customTypes/musicalTypes'
 
-type ChordStructure = {
-  noteNumbers: NoteNumber[]
-  noteDegrees: NoteDegree[]
-}
-type ChordTypeMap = { [key in ChordType]: ChordStructure }
-const CHORD_STRUCTURE_MAP: ChordTypeMap = {
-  '': { noteNumbers: [1, 5, 8], noteDegrees: ['R', 'M3', 'P5'] },
-  m: { noteNumbers: [1, 4, 8], noteDegrees: ['R', 'm3', 'P5'] },
-  mb5: { noteNumbers: [1, 4, 7], noteDegrees: ['R', 'm3', 'b5'] },
-  '5': { noteNumbers: [1, 8], noteDegrees: ['R', 'P5'] },
-  dim: { noteNumbers: [1, 4, 7], noteDegrees: ['R', 'm3', 'b5'] },
-  aug: { noteNumbers: [1, 5, 9], noteDegrees: ['R', 'P5', '#5'] },
-  sus2: { noteNumbers: [1, 3, 8], noteDegrees: ['R', 'M2', 'P5'] },
-  sus4: { noteNumbers: [1, 6, 8], noteDegrees: ['R', 'P4', 'P5'] },
-  '6': { noteNumbers: [1, 5, 8, 10], noteDegrees: ['R', 'M3', 'P5', 'M6'] },
-  m6: { noteNumbers: [1, 4, 8, 10], noteDegrees: ['R', 'm3', 'P5', 'M6'] },
-  '7': { noteNumbers: [1, 5, 8, 11], noteDegrees: ['R', 'M3', 'P5', 'm7'] },
-  M7: { noteNumbers: [1, 5, 8, 12], noteDegrees: ['R', 'M3', 'P5', 'M7'] },
-  m7: { noteNumbers: [1, 4, 8, 11], noteDegrees: ['R', 'm3', 'P5', 'm7'] },
-  aug7: { noteNumbers: [1, 5, 9, 11], noteDegrees: ['R', 'P5', '#5', 'm7'] },
-  dim7: { noteNumbers: [1, 4, 7, 11], noteDegrees: ['R', 'm3', 'b5', 'm7'] },
-  '7b5': { noteNumbers: [1, 5, 7, 11], noteDegrees: ['R', 'M3', 'b5', 'm7'] },
-  '7#5': { noteNumbers: [1, 5, 9, 11], noteDegrees: ['R', 'M3', '#5', 'm7'] },
-  m7b5: { noteNumbers: [1, 4, 7, 11], noteDegrees: ['R', 'm3', 'b5', 'm7'] },
-  'm7#5': { noteNumbers: [1, 4, 9, 11], noteDegrees: ['R', 'm3', '#5', 'm7'] },
-}
-
-const MAJOR_SCALE = [1, 3, 5, 6, 8, 10, 12]
+const { SCALE } = Constants
 
 class MusicalUtil {
-  private static fixeNoteNumber(noteNumber: NoteNumber): BaseNoteNumber {
-    return (noteNumber > 12 ? noteNumber - 12 : noteNumber) as BaseNoteNumber
+  /**
+   * Noteが2オクターブ以内にあるか
+   */
+  private static isIn2Octobe(noteNumber: number) {
+    return noteNumber < 1 || noteNumber > 24
   }
 
-  private static getNoteName(noteNumber: NoteNumber, accidental: Accidental): NoteName {
+  /**
+   * Noteが1オクターブ以内にあるか
+   */
+  private static isIn1Octobe(noteNumber: number) {
+    return noteNumber < 1 || noteNumber > 12
+  }
+
+  /**
+   * 2オクターブ以上の音を1オクターブに変換する
+   * @param noteNumber 1 ~ 24
+   * @returns 1 ~ 12
+   */
+  static fixeNoteNumber(noteNumber: number) {
+    if (this.isIn2Octobe(noteNumber)) throw new Error(`Invalid note number: ${noteNumber}`)
+    return noteNumber > 12 ? noteNumber - 12 : noteNumber
+  }
+
+  /**
+   * 2オクターブ以内のNoteNumberから音名を取得する
+   * @param noteNumber 1 ~ 24
+   * @param accidental
+   * @returns
+   */
+  static noteNumberToName(noteNumber: number, accidental: Accidental): NoteName {
+    if (this.isIn2Octobe(noteNumber)) throw new Error(`Invalid note number: ${noteNumber}`)
     if (noteNumber === 1 || noteNumber === 13) return 'C'
     if (noteNumber === 2 || noteNumber === 14) return accidental === '#' ? 'C#' : 'Db'
     if (noteNumber === 3 || noteNumber === 15) return 'D'
@@ -54,35 +47,34 @@ class MusicalUtil {
     if (noteNumber === 9 || noteNumber === 21) return accidental === '#' ? 'G#' : 'Ab'
     if (noteNumber === 10 || noteNumber === 22) return 'A'
     if (noteNumber === 11 || noteNumber === 23) return accidental === '#' ? 'A#' : 'Bb'
-    if (noteNumber === 12 || noteNumber === 24) return 'B'
-    throw new Error(`Invalid note number: ${noteNumber as number}`)
+    return 'B' // 12 or 24
   }
 
-  static noteNumberToName(noteNumber: NoteNumber, accidental: Accidental): NoteName {
-    const fixedNoteNumber = MusicalUtil.fixeNoteNumber(noteNumber)
-    const baseNote: NoteName = MusicalUtil.getNoteName(fixedNoteNumber, accidental)
-    return baseNote
-  }
-
-  static getNotesInChordNumber(chordType: ChordType): NoteNumber[] {
-    return CHORD_STRUCTURE_MAP[`${chordType}`].noteNumbers
-  }
-
-  static getNotesInChordDegree(chordType: ChordType): NoteDegree[] {
-    return CHORD_STRUCTURE_MAP[`${chordType}`].noteDegrees
-  }
-
-  static getNoteNamesInChord(rootNumber: NoteNumber, chordType: ChordType, accidental: Accidental) {
-    const notesInChordNumber = MusicalUtil.getNotesInChordNumber(chordType)
+  /**
+   * コード構成音を返す
+   * @param rootNumber 1 ~ 12
+   * @param chordType
+   * @param accidental
+   * @returns
+   */
+  static getNoteNamesInChord(rootNumber: number, chordType: ChordType, accidental: Accidental) {
+    this.isIn1Octobe(rootNumber)
+    const notesInChordNumber = Constants.getNotesInChordNumber(chordType)
     const noteNamesInChord: NoteName[] = []
     notesInChordNumber.forEach((noteNumber) => {
-      const calcNoteNumber = MusicalUtil.fixeNoteNumber((rootNumber + noteNumber - 1) as NoteNumber)
-      const noteName = MusicalUtil.noteNumberToName(calcNoteNumber, accidental)
+      const calcNoteNumber = this.fixeNoteNumber(rootNumber + noteNumber - 1)
+      const noteName = this.noteNumberToName(calcNoteNumber, accidental)
       noteNamesInChord.push(noteName)
     })
     return noteNamesInChord
   }
 
+  /**
+   * 指定した度数のダイアトニックコードを返す
+   * @param degree 1 ~ 7
+   * @param type
+   * @returns
+   */
   static getChordTypeFromDegreeNum(degree: number, type: DiatonicType): ChordType {
     if (degree === 1) return type === '3note' ? '' : 'M7'
     if (degree === 2) return type === '3note' ? 'm' : 'm7'
@@ -94,8 +86,14 @@ class MusicalUtil {
     throw new Error(`Invalid degree: ${degree}`)
   }
 
-  static getMajorScale() {
-    return MAJOR_SCALE
+  /**
+   * 指定したキーのメジャースケールを取得する
+   * @param key 1 ~ 12
+   * @returns 1 ~ 24
+   */
+  static getMajorScale(key: number) {
+    this.isIn1Octobe(key)
+    return SCALE.MAJOR_SCALSE.map((noteNumber) => noteNumber + key - 1)
   }
 }
 
