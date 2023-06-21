@@ -1,10 +1,7 @@
-const PC_KEY = [
-  ['z', 's', 'x', 'd', 'c', 'v', 'g', 'b', 'h', 'n', 'j', 'm', ',', 'l', '.', ';', '/', '_', ']'],
-  ['q', '2', 'w', '3', 'e', 'r', '5', 't', '6', 'y', '7', 'u', 'i', '9', 'o', '0', 'p', '@', '^', '[', '¥'],
+import Constants from '../constants/constants'
+import mu from '../utils/MusicalUtil'
 
-  // "a", "z", "s", "x", "d", "c", "f", "v", "g", "b", "h", "n", "j", "m", "k", ",", "l", ".", ";", "/", ":", "_", "]",
-  // "1", "q", "2", "w", "3", "e", "4", "r", "5", "t", "6", "y", "7", "u", "8", "i", "9", "o", "0", "p", "-", "@", "^",
-]
+const { PC_KEY } = Constants
 
 class PcKeyService {
   private pressingKey: Array<string> = []
@@ -15,21 +12,41 @@ class PcKeyService {
 
   private normalKeyUpAction: ((key: string) => void) | undefined
 
+  private octobe: number
+
+  constructor(octobe: number) {
+    this.octobe = octobe
+  }
+
   private keyDownHanler = (event: KeyboardEvent) => {
     if (this.pressingKey.includes(event.key)) return
     if (event.key === ' ') {
-      this.keySpaceAction?.()
+      this.keyDownSpace()
     } else if (PC_KEY.flatMap((e) => e).includes(event.key)) {
-      this.normalKeyDownAction?.(event.key)
+      this.keyDownNormal(event.key)
     }
     this.pressingKey.push(event.key)
   }
 
   private keyUpHanler = (event: KeyboardEvent) => {
     if (PC_KEY.flatMap((e) => e).includes(event.key)) {
-      this.normalKeyUpAction?.(event.key)
+      this.keyUpNormal(event.key)
     }
     this.pressingKey = this.pressingKey.filter((e) => e !== event.key)
+  }
+
+  private keyDownSpace() {
+    this.keySpaceAction?.()
+  }
+
+  private keyDownNormal(key: string) {
+    const midiNumber = mu.getNoteNumberFromPcKey(key, this.octobe)
+    this.normalKeyDownAction?.(midiNumber)
+  }
+
+  private keyUpNormal(key: string) {
+    const midiNumber = mu.getNoteNumberFromPcKey(key, this.octobe)
+    this.normalKeyUpAction?.(midiNumber)
   }
 
   setKeySpaceAction(keyAction: () => void) {
@@ -40,7 +57,7 @@ class PcKeyService {
     this.normalKeyDownAction = keyAction
   }
 
-  setNormalUpDownAction(keyAction: (key: string) => void) {
+  setNormalKeyUpAction(keyAction: (key: string) => void) {
     this.normalKeyUpAction = keyAction
   }
 

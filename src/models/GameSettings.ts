@@ -7,11 +7,14 @@ class GameSettings {
 
   private _accidental: Accidental
 
-  constructor(diatonicKey: number, diatonicType: DiatonicType, accidental: Accidental) {
-    GameSettings.validateDiatonicKey(diatonicKey)
+  private _pianoOctobe: number
+
+  constructor(diatonicKey: number, diatonicType: DiatonicType, accidental: Accidental, pianoOctobe: number) {
+    GameSettings.validate(diatonicKey, pianoOctobe)
     this._diatonicKey = diatonicKey
     this._diatonicType = diatonicType
     this._accidental = accidental
+    this._pianoOctobe = pianoOctobe
   }
 
   get diatonicKey(): number {
@@ -39,10 +42,29 @@ class GameSettings {
     this._accidental = accidental
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  get pianoOctobe(): number {
+    return this._pianoOctobe
+  }
+
+  set pianoOctobe(pianoOctobe: number) {
+    GameSettings.validateOctobe(pianoOctobe)
+    this._pianoOctobe = pianoOctobe
+  }
+
+  private static validate(diatonicKey: number, pianoOctobe: number) {
+    this.validateDiatonicKey(diatonicKey)
+    this.validateOctobe(pianoOctobe)
+  }
+
   private static validateDiatonicKey(diatonicKey: number): void {
     if (diatonicKey < 1 || diatonicKey > 12) {
       throw new Error('Number value must be between 1 and 12')
+    }
+  }
+
+  private static validateOctobe(pianoOctobe: number) {
+    if (pianoOctobe < 0 || pianoOctobe > 9) {
+      throw new Error('Number value must be between 0 and 9')
     }
   }
 }
