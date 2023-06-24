@@ -1,4 +1,4 @@
-export type Accidental = '' | '#' | 'b'
+export type AccidentalType = '#' | 'b'
 export type NoteDegree =
   | 'R'
   | 'm2'
@@ -22,8 +22,9 @@ export type NoteDegree =
   | 'b13'
   | '13'
 export type NaturalNoteName = 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B'
-export type AlteredNoteName = 'C#' | 'Cb' | 'D#' | 'Db' | 'E#' | 'Eb' | 'F#' | 'Fb' | 'G#' | 'Gb' | 'A#' | 'Ab' | 'B#' | 'Bb'
-export type NoteName = NaturalNoteName | AlteredNoteName
+export type SharpNoteName = 'C#' | 'D#' | 'E#' | 'F#' | 'G#' | 'A#' | 'B#'
+export type FlatNoteName = 'Cb' | 'Db' | 'Eb' | 'Fb' | 'Gb' | 'Ab' | 'Bb'
+export type NoteName = NaturalNoteName | SharpNoteName | FlatNoteName
 export type ChordType =
   | ''
   | 'm'

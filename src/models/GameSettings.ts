@@ -1,4 +1,5 @@
-import { Accidental, DiatonicType } from '../customTypes/musicalTypes'
+import { AccidentalType, DiatonicType } from '../customTypes/musicalTypes'
+import Accidental from './Accidental'
 
 class GameSettings {
   private _diatonicKey: number
@@ -9,11 +10,11 @@ class GameSettings {
 
   private _pianoOctobe: number
 
-  constructor(diatonicKey: number, diatonicType: DiatonicType, accidental: Accidental, pianoOctobe: number) {
+  constructor(diatonicKey: number, diatonicType: DiatonicType, accidental: AccidentalType, pianoOctobe: number) {
     GameSettings.validate(diatonicKey, pianoOctobe)
     this._diatonicKey = diatonicKey
     this._diatonicType = diatonicType
-    this._accidental = accidental
+    this._accidental = new Accidental(accidental)
     this._pianoOctobe = pianoOctobe
   }
 
@@ -36,10 +37,6 @@ class GameSettings {
 
   get accidental(): Accidental {
     return this._accidental
-  }
-
-  set accidental(accidental: Accidental) {
-    this._accidental = accidental
   }
 
   get pianoOctobe(): number {
