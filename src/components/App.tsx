@@ -6,11 +6,10 @@ import Nob from './Nob'
 import Pad from './Pad'
 import GameService from '../services/GameService'
 import Chord from '../models/Chord'
-import PcKeyListener from './PcKeyListner'
 import ViewHandler from '../handlers/ViewHandler'
 
 const gameService = GameService.createGameService()
-const viewHandler = new ViewHandler(gameService)
+// const viewHandler = new ViewHandler(gameService)
 gameService.init()
 
 function App() {
@@ -21,7 +20,7 @@ function App() {
     gameService.gameStart()
   }, [])
 
-  const { keyDownHandler, keyUpHandler } = viewHandler.getPcKeyListnerProps()
+  // const { keyDownHandler, keyUpHandler } = viewHandler.getPcKeyListnerProps()
 
   return (
     <div className="h-screen bg-[#dedede] select-none font-mono">
@@ -44,7 +43,6 @@ function App() {
       <div className="h-1/4 border border-black">
         <KeyBoard />
       </div>
-      <PcKeyListener keyDownHandler={keyDownHandler} keyUpHandler={keyUpHandler} />
     </div>
   )
 }

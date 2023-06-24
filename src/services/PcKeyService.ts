@@ -1,7 +1,6 @@
 import Constants from '../constants/constants'
-import mu from '../utils/MusicalUtil'
 
-const { PC_KEY } = Constants
+const { PC_KEY, MIDI_NUMBER_TO_NAME } = Constants
 
 class PcKeyService {
   private pressingKey: Array<string> = []
@@ -12,20 +11,21 @@ class PcKeyService {
 
   private normalKeyUpAction: ((key: string) => void) | undefined
 
-  private octobe: number
+  private octobe?: number
 
-  constructor(octobe: number) {
-    this.octobe = octobe
+  constructor() {
+    document.addEventListener('keydown', (event) => this.keyDownHanler(event))
+    document.addEventListener('keyup', (event) => this.keyUpHanler(event))
   }
 
-  private keyDownHanler = (event: KeyboardEvent) => {
-    if (this.pressingKey.includes(event.key)) return
-    if (event.key === ' ') {
+  private keyDownHanler = ({ key }: KeyboardEvent) => {
+    if (this.pressingKey.includes(key)) return
+    if (key === ' ') {
       this.keyDownSpace()
-    } else if (PC_KEY.flatMap((e) => e).includes(event.key)) {
-      this.keyDownNormal(event.key)
+    } else if (PC_KEY.flatMap((e) => e).includes(key)) {
+      this.keyDownNormal(key)
     }
-    this.pressingKey.push(event.key)
+    this.pressingKey.push(key)
   }
 
   private keyUpHanler = (event: KeyboardEvent) => {
@@ -40,12 +40,12 @@ class PcKeyService {
   }
 
   private keyDownNormal(key: string) {
-    const midiNumber = mu.getNoteNumberFromPcKey(key, this.octobe)
+    const midiNumber = PcKeyService.getMidiNumberFromPcKey(key, this.octobe ?? 4) // TODO ??4を後でなんとかする
     this.normalKeyDownAction?.(midiNumber)
   }
 
   private keyUpNormal(key: string) {
-    const midiNumber = mu.getNoteNumberFromPcKey(key, this.octobe)
+    const midiNumber = PcKeyService.getMidiNumberFromPcKey(key, this.octobe ?? 4) // TODO ??4を後でなんとかする
     this.normalKeyUpAction?.(midiNumber)
   }
 
@@ -61,12 +61,25 @@ class PcKeyService {
     this.normalKeyUpAction = keyAction
   }
 
-  getKeyDownHandler() {
-    return this.keyDownHanler
-  }
+  /**
+   * PCキー入力からNoteNumberを取定する
+   */
+  private static getMidiNumberFromPcKey(key: string, octobe: number) {
+    if (octobe < 0 || octobe > 9 || !Number.isInteger(octobe)) {
+      throw new Error(`Invalid octobe: ${octobe}`)
+    }
 
-  getKeyUpHandler() {
-    return this.keyUpHanler
+    const offSet = octobe * 12
+    let index = PC_KEY[0].findIndex((value) => value === key)
+    if (index >= 0) {
+      return MIDI_NUMBER_TO_NAME[index + offSet + 12]
+    }
+
+    index = PC_KEY[1].findIndex((value) => value === key)
+    if (index >= 0) {
+      return MIDI_NUMBER_TO_NAME[index + offSet]
+    }
+    throw new Error(`Invalid PCkey: ${key}`)
   }
 }
 

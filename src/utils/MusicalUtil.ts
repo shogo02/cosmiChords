@@ -1,7 +1,7 @@
 import Constants from '../constants/constants'
 import { ChordType, DiatonicType } from '../customTypes/musicalTypes'
 
-const { SCALE, PC_KEY, MIDI_NUMBER_TO_NAME } = Constants
+const { SCALE } = Constants
 
 class MusicalUtil {
   /**
@@ -53,27 +53,6 @@ class MusicalUtil {
   static getMajorScale(key: number) {
     this.isIn1Octobe(key)
     return SCALE.MAJOR_SCALSE.map((noteNumber) => noteNumber + key - 1)
-  }
-
-  /**
-   * PCキー入力からNoteNumberを取定する
-   */
-  static getNoteNumberFromPcKey(key: string, octobe: number) {
-    if (octobe < 0 || octobe > 9 || !Number.isInteger(octobe)) {
-      throw new Error(`Invalid octobe: ${octobe}`)
-    }
-
-    const offSet = octobe * 12
-    let index = PC_KEY[0].findIndex((value) => value === key)
-    if (index >= 0) {
-      return MIDI_NUMBER_TO_NAME[index + offSet + 12]
-    }
-
-    index = PC_KEY[1].findIndex((value) => value === key)
-    if (index >= 0) {
-      return MIDI_NUMBER_TO_NAME[index + offSet]
-    }
-    throw new Error(`Invalid PCkey: ${key}`)
   }
 }
 

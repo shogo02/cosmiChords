@@ -1,4 +1,3 @@
-import { PcKeyListenerProps } from '../components/PcKeyListner'
 import GameService from '../services/GameService'
 
 class ViewHandler {
@@ -6,13 +5,6 @@ class ViewHandler {
 
   constructor(gameService: GameService) {
     this.gs = gameService
-  }
-
-  getPcKeyListnerProps(): PcKeyListenerProps {
-    return {
-      keyDownHandler: this.gs.getPcKeyService().getKeyDownHandler(),
-      keyUpHandler: this.gs.getPcKeyService().getKeyUpHandler(),
-    }
   }
 }
 

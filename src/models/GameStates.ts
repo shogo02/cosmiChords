@@ -1,5 +1,8 @@
 import Chord from './Chord'
 
+/**
+ * リアルタイムに変化する値を管理する
+ */
 class GameStates {
   private _currentChord: Chord | undefined
 

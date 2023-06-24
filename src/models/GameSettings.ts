@@ -1,6 +1,9 @@
 import { AccidentalType, DiatonicType } from '../customTypes/musicalTypes'
 import Accidental from './Accidental'
 
+/**
+ * ゲーム設定を管理する
+ */
 class GameSettings {
   private _diatonicKey: number
 

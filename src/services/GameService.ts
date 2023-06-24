@@ -1,11 +1,10 @@
 import SynthCreator from '../utils/SynthCreator'
 import ChordGenerator from './ChordGenerator'
 import GameSettings from '../models/GameSettings'
-import PcKeyService from './PcKeyService'
 import TransportService, { Pattern } from './TransportService'
 import GameStates from '../models/GameStates'
 import Chord from '../models/Chord'
-import SynthService from './SynthService'
+import InputController from '../controllers/InputController'
 
 const METRONOME_PATTERN: Pattern = [
   { time: 0, note: 'C6', velocity: 1 },
@@ -21,11 +20,9 @@ class GameService {
 
   private gameStates: GameStates
 
-  private transportService: TransportService
+  private transportService?: TransportService
 
-  private pcKeyService: PcKeyService
-
-  private synthService: SynthService
+  private inputController: InputController
 
   // TODO ↓やり方考える
   public setChordView: React.Dispatch<React.SetStateAction<Chord | undefined>> | undefined
@@ -34,31 +31,25 @@ class GameService {
     chordGenerator: ChordGenerator,
     gameSettings: GameSettings,
     gameStates: GameStates,
-    transportService: TransportService,
-    pcKeyService: PcKeyService,
-    synthService: SynthService
+    inputController: InputController
   ) {
     this.chordGenerator = chordGenerator
     this.gameSettings = gameSettings
     this.gameStates = gameStates
-    this.transportService = transportService
-    this.pcKeyService = pcKeyService
-    this.synthService = synthService
+    this.inputController = inputController
   }
 
   static createGameService() {
     const gameSettings = new GameSettings(7, '3note', 'b', 5)
     const gameState = new GameStates()
     const chordGenerator = new ChordGenerator()
-    const transportService = new TransportService(SynthCreator.createSynth(), METRONOME_PATTERN)
-    const pcKeyService = new PcKeyService(gameSettings.pianoOctobe)
-    const synthService = new SynthService(SynthCreator.createPolySynth())
-    return new GameService(chordGenerator, gameSettings, gameState, transportService, pcKeyService, synthService)
+    const inputController = InputController.createInputController()
+    return new GameService(chordGenerator, gameSettings, gameState, inputController)
   }
 
   init() {
     this.createPart()
-    this.setPcKeyListner()
+    this.inputController.init()
   }
 
   gameStart() {
@@ -76,31 +67,10 @@ class GameService {
     this.transportService.createPart()
   }
 
-  private setPcKeyListner() {
-    this.pcKeyService.setKeySpaceAction(() => {
-      TransportService.toggleTransport()
-      console.log('pressSpace')
-    })
-
-    this.pcKeyService.setNormalKeyDownAction((key: string) => {
-      this.synthService.noteOn(key)
-      console.log('key down')
-    })
-
-    this.pcKeyService.setNormalKeyUpAction((key: string) => {
-      this.synthService.noteOff(key)
-      console.log('key up')
-    })
-  }
-
   private generateChord() {
     const { diatonicKey, diatonicType, accidental } = this.gameSettings
     this.chordGenerator.createDiatonicValidChords(diatonicKey, diatonicType, accidental.value)
     this.gameStates.currentChord = this.chordGenerator.getRandomChord()
-  }
-
-  getPcKeyService() {
-    return this.pcKeyService
   }
 }
 
