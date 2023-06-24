@@ -54,6 +54,6 @@ testChord.forEach((tc, index) => {
   test(`index: ${index}`, () => {
     const chord = new Chord(tc.rootNumber, tc.chordType, tc.accidental)
     expect(chord.chordName).toBe(tc.tobe.chordName)
-    expect(chord.noteNamesInChord).toEqual(tc.tobe.noteNames)
+    expect(chord.noteNames).toEqual(tc.tobe.noteNames)
   })
 })

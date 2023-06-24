@@ -59,7 +59,7 @@ class Chord {
     return this.rootNoteName + this.chordType
   }
 
-  get noteNumbersInChord(): number[] {
+  get noteNumbers(): number[] {
     return this.getNoteNumbersInChord()
   }
 
@@ -67,7 +67,7 @@ class Chord {
     return this.getChordDegreeInChord()
   }
 
-  get noteNamesInChord(): NoteName[] {
+  get noteNames(): NoteName[] {
     return this.getNoteNamesInChord()
   }
 
@@ -90,7 +90,7 @@ class Chord {
    */
   private getNoteNamesInChord(): NoteName[] {
     mu.isIn1Octobe(this.rootNumber)
-    return this.noteNumbersInChord.map((noteNumber) => {
+    return this.noteNumbers.map((noteNumber) => {
       const calcNoteNumber = mu.fixedNoteNumber(this.rootNumber + noteNumber - 1)
       return this.convertNoteNumberToName(calcNoteNumber)
     })
