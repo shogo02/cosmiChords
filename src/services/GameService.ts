@@ -4,7 +4,7 @@ import GameSettings from '../models/GameSettings'
 import TransportService, { Pattern } from './TransportService'
 import GameStates from '../models/GameStates'
 import Chord from '../models/Chord'
-import InputController from '../controllers/InputController'
+import InputController from '../controllers/Input/InputController'
 
 const METRONOME_PATTERN: Pattern = [
   { time: 0, note: 'C6', velocity: 1 },

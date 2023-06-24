@@ -1,17 +1,17 @@
-import MidiKeyService from '../services/MidiKeyService'
-import PcKeyService from '../services/PcKeyService'
-import SynthService from '../services/SynthService'
-import TransportService from '../services/TransportService'
-import SynthCreator from '../utils/SynthCreator'
+import SynthService from '../../services/SynthService'
+import TransportService from '../../services/TransportService'
+import SynthCreator from '../../utils/SynthCreator'
+import PcKeyHandler from './PcKeyHandler'
+import MidiKeyHandler from './MidiKeyHandler'
 
 class InputController {
   private synthService: SynthService
 
-  private pcKeyService: PcKeyService
+  private pcKeyService: PcKeyHandler
 
-  private midiKeyService: MidiKeyService
+  private midiKeyService: MidiKeyHandler
 
-  private constructor(synthService: SynthService, pcKeyService: PcKeyService, midiKeyService: MidiKeyService) {
+  private constructor(synthService: SynthService, pcKeyService: PcKeyHandler, midiKeyService: MidiKeyHandler) {
     this.synthService = synthService
     this.pcKeyService = pcKeyService
     this.midiKeyService = midiKeyService
@@ -19,12 +19,13 @@ class InputController {
 
   static createInputController() {
     const synthService = new SynthService(SynthCreator.createPolySynth())
-    const inputController = new InputController(synthService, new PcKeyService(), new MidiKeyService())
+    const inputController = new InputController(synthService, new PcKeyHandler(), new MidiKeyHandler())
     return inputController
   }
 
   init() {
     this.initPcKeyAction()
+    this.pcKeyService.init()
   }
 
   private initPcKeyAction() {

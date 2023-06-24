@@ -9,6 +9,7 @@ class TransportService {
 
   private draw: () => void
 
+  // TODO なんとかする
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor(synth: Synth, pattern: Pattern, draw: () => void = () => {}) {
     this.synth = synth

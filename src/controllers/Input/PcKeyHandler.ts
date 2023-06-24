@@ -1,8 +1,8 @@
-import Constants from '../constants/constants'
+import Constants from '../../constants/constants'
 
 const { PC_KEY, MIDI_NUMBER_TO_NAME } = Constants
 
-class PcKeyService {
+class PcKeyHandler {
   private pressingKey: Array<string> = []
 
   private keySpaceAction: (() => void) | undefined
@@ -13,7 +13,7 @@ class PcKeyService {
 
   private octobe?: number
 
-  constructor() {
+  init() {
     document.addEventListener('keydown', (event) => this.keyDownHanler(event))
     document.addEventListener('keyup', (event) => this.keyUpHanler(event))
   }
@@ -22,7 +22,7 @@ class PcKeyService {
     if (this.pressingKey.includes(key)) return
     if (key === ' ') {
       this.keyDownSpace()
-    } else if (PC_KEY.flatMap((e) => e).includes(key)) {
+    } else if (PcKeyHandler.isValidPcKey(key)) {
       this.keyDownNormal(key)
     }
     this.pressingKey.push(key)
@@ -40,12 +40,12 @@ class PcKeyService {
   }
 
   private keyDownNormal(key: string) {
-    const midiNumber = PcKeyService.getMidiNumberFromPcKey(key, this.octobe ?? 4) // TODO ??4を後でなんとかする
+    const midiNumber = PcKeyHandler.getMidiNumberFromPcKey(key, this.octobe ?? 4) // TODO ??4を後でなんとかする
     this.normalKeyDownAction?.(midiNumber)
   }
 
   private keyUpNormal(key: string) {
-    const midiNumber = PcKeyService.getMidiNumberFromPcKey(key, this.octobe ?? 4) // TODO ??4を後でなんとかする
+    const midiNumber = PcKeyHandler.getMidiNumberFromPcKey(key, this.octobe ?? 4) // TODO ??4を後でなんとかする
     this.normalKeyUpAction?.(midiNumber)
   }
 
@@ -81,6 +81,13 @@ class PcKeyService {
     }
     throw new Error(`Invalid PCkey: ${key}`)
   }
+
+  /**
+   * 有効なPCキーかどうかを判定
+   */
+  private static isValidPcKey(key: string): boolean {
+    return PC_KEY.flat().includes(key)
+  }
 }
 
-export default PcKeyService
+export default PcKeyHandler
