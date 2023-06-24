@@ -1,10 +1,10 @@
-import { Accidental, ChordType } from '../customTypes/musicalTypes'
+import { AccidentalType, ChordType } from '../customTypes/musicalTypes'
 import Chord from '../models/Chord'
 
 type TestChord = {
   rootNumber: number
   chordType: ChordType
-  accidental: Accidental
+  accidental?: AccidentalType
   tobe: {
     chordName: string
     noteNames: string[]
@@ -14,19 +14,16 @@ const testChord: TestChord[] = [
   {
     rootNumber: 1,
     chordType: '',
-    accidental: '',
     tobe: { chordName: 'C', noteNames: ['C', 'E', 'G'] },
   },
   {
     rootNumber: 1,
     chordType: 'm',
-    accidental: '',
     tobe: { chordName: 'Cm', noteNames: ['C', 'Eb', 'G'] },
   },
   {
     rootNumber: 2,
     chordType: 'm7b5',
-    accidental: '',
     tobe: { chordName: 'Dbm7b5', noteNames: ['Db', 'E', 'G', 'B'] },
   },
   {
@@ -38,13 +35,11 @@ const testChord: TestChord[] = [
   {
     rootNumber: 12,
     chordType: '7',
-    accidental: '',
     tobe: { chordName: 'B7', noteNames: ['B', 'Eb', 'Gb', 'A'] },
   },
   {
     rootNumber: 1,
     chordType: 'M7',
-    accidental: '',
     tobe: { chordName: 'CM7', noteNames: ['C', 'E', 'G', 'B'] },
   },
   {

@@ -1,5 +1,5 @@
 import Constants from '../constants/constants'
-import { Accidental, ChordType, NoteName, DiatonicType } from '../customTypes/musicalTypes'
+import { ChordType, DiatonicType } from '../customTypes/musicalTypes'
 
 const { SCALE, PC_KEY, MIDI_NUMBER_TO_NAME } = Constants
 
@@ -7,14 +7,14 @@ class MusicalUtil {
   /**
    * Noteが2オクターブ以内にあるか
    */
-  private static isIn2Octobe(noteNumber: number) {
+  static isIn2Octobe(noteNumber: number) {
     return noteNumber < 1 || noteNumber > 24
   }
 
   /**
    * Noteが1オクターブ以内にあるか
    */
-  private static isIn1Octobe(noteNumber: number) {
+  static isIn1Octobe(noteNumber: number) {
     return noteNumber < 1 || noteNumber > 12
   }
 
@@ -23,50 +23,9 @@ class MusicalUtil {
    * @param noteNumber 1 ~ 24
    * @returns 1 ~ 12
    */
-  static fixeNoteNumber(noteNumber: number) {
-    if (this.isIn2Octobe(noteNumber)) throw new Error(`Invalid note number: ${noteNumber}`)
+  static fixedNoteNumber(noteNumber: number) {
+    if (MusicalUtil.isIn2Octobe(noteNumber)) throw new Error(`Invalid note number: ${noteNumber}`)
     return noteNumber > 12 ? noteNumber - 12 : noteNumber
-  }
-
-  /**
-   * 2オクターブ以内のNoteNumberから音名を取得する
-   * @param noteNumber 1 ~ 24
-   * @param accidental
-   * @returns
-   */
-  static noteNumberToName(noteNumber: number, accidental: Accidental): NoteName {
-    if (this.isIn2Octobe(noteNumber)) throw new Error(`Invalid note number: ${noteNumber}`)
-    if (noteNumber === 1 || noteNumber === 13) return 'C'
-    if (noteNumber === 2 || noteNumber === 14) return accidental === '#' ? 'C#' : 'Db'
-    if (noteNumber === 3 || noteNumber === 15) return 'D'
-    if (noteNumber === 4 || noteNumber === 16) return accidental === '#' ? 'D#' : 'Eb'
-    if (noteNumber === 5 || noteNumber === 17) return 'E'
-    if (noteNumber === 6 || noteNumber === 18) return 'F'
-    if (noteNumber === 7 || noteNumber === 19) return accidental === '#' ? 'F#' : 'Gb'
-    if (noteNumber === 8 || noteNumber === 20) return 'G'
-    if (noteNumber === 9 || noteNumber === 21) return accidental === '#' ? 'G#' : 'Ab'
-    if (noteNumber === 10 || noteNumber === 22) return 'A'
-    if (noteNumber === 11 || noteNumber === 23) return accidental === '#' ? 'A#' : 'Bb'
-    return 'B' // 12 or 24
-  }
-
-  /**
-   * コード構成音を返す
-   * @param rootNumber 1 ~ 12
-   * @param chordType
-   * @param accidental
-   * @returns
-   */
-  static getNoteNamesInChord(rootNumber: number, chordType: ChordType, accidental: Accidental) {
-    this.isIn1Octobe(rootNumber)
-    const notesInChordNumber = Constants.getNotesInChordNumber(chordType)
-    const noteNamesInChord: NoteName[] = []
-    notesInChordNumber.forEach((noteNumber) => {
-      const calcNoteNumber = this.fixeNoteNumber(rootNumber + noteNumber - 1)
-      const noteName = this.noteNumberToName(calcNoteNumber, accidental)
-      noteNamesInChord.push(noteName)
-    })
-    return noteNamesInChord
   }
 
   /**

@@ -95,7 +95,7 @@ class GameService {
 
   private generateChord() {
     const { diatonicKey, diatonicType, accidental } = this.gameSettings
-    this.chordGenerator.createDiatonicValidChords(diatonicKey, diatonicType, accidental)
+    this.chordGenerator.createDiatonicValidChords(diatonicKey, diatonicType, accidental.value)
     this.gameStates.currentChord = this.chordGenerator.getRandomChord()
   }
 
