@@ -23,6 +23,7 @@ class AppService {
     // this.gameService.init()
     this.inputController.init()
     this.createPart()
+    this.inputController.setPcKeyOctobe(4) // TODO 後々可変にする
   }
 
   start() {
