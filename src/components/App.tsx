@@ -4,12 +4,17 @@ import Mixer from './Mixer'
 import Nob from './Nob'
 import Pad from './Pad'
 import AppService from '../services/AppService'
+import gameStates from '../models/GameStates'
 
 const appService = AppService.createAppservice()
 appService.init()
 appService.start()
 
 function App() {
+  console.log('app rendering')
+
+  const currentChord = gameStates((state) => state.currentChord)
+
   return (
     <div className="h-screen bg-[#dedede] select-none font-mono">
       <div className="flex flex-row justify-between h-3/4">
@@ -18,7 +23,7 @@ function App() {
         </div>
         <div className="basis-full border border-black flex flex-col pt-20 mx-14">
           <div className="h-5/6 border border-black">
-            <Main />
+            <Main chord={currentChord} />
           </div>
           <div className="h-1/6 border border-black">
             <Nob />

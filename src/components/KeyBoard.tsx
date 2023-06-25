@@ -1,3 +1,5 @@
+import React from 'react'
+
 interface KeyProps {
   midiNumber: number
   pcKey: string
@@ -30,7 +32,9 @@ function Key(props: KeyProps) {
   )
 }
 
-function KeyBoard() {
+const KeyBoard = React.memo(() => {
+  console.log('keyboard rendering')
+
   const KEYBOARD_OFFSET = 36
   const keyboardOctobe = 0
   const offSet = KEYBOARD_OFFSET + keyboardOctobe * 12
@@ -48,6 +52,6 @@ function KeyBoard() {
       </div>
     </div>
   )
-}
+})
 
 export default KeyBoard
