@@ -1,5 +1,3 @@
-import { ChordType, NoteDegree } from '../customTypes/musicalTypes'
-
 type MidiNumberMap = { [key in number]: string }
 
 class Constants {
@@ -10,10 +8,6 @@ class Constants {
   static readonly PC_KEY = [
     ['q', '2', 'w', '3', 'e', 'r', '5', 't', '6', 'y', '7', 'u', 'i', '9', 'o', '0', 'p', '@', '^', '[', '¥'],
     ['z', 's', 'x', 'd', 'c', 'v', 'g', 'b', 'h', 'n', 'j', 'm', ',', 'l', '.', ';', '/', '_', ']'],
-
-    // キーボードの端から端まですべて使う場合
-    // "a", "z", "s", "x", "d", "c", "f", "v", "g", "b", "h", "n", "j", "m", "k", ",", "l", ".", ";", "/", ":", "_", "]",
-    // "1", "q", "2", "w", "3", "e", "4", "r", "5", "t", "6", "y", "7", "u", "8", "i", "9", "o", "0", "p", "-", "@", "^",
   ]
 
   static readonly MIDI_NUMBER_TO_NAME: MidiNumberMap = {
