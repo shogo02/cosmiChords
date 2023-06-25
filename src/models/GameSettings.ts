@@ -1,72 +1,42 @@
+import { create } from 'zustand'
 import { AccidentalType, DiatonicType } from '../customTypes/musicalTypes'
-import Accidental from './Accidental'
+
+type GameSettings = {
+  diatonicKey: number
+  diatonicType: DiatonicType
+  accidental: AccidentalType
+  pianoOctobe: number
+}
 
 /**
  * ゲーム設定を管理する
  */
-class GameSettings {
-  private _diatonicKey: number
+const gameSettings = create<GameSettings>((set) => ({
+  diatonicKey: 1,
+  setDiatonicKey: (diatonicKey: number) =>
+    set(() => {
+      if (diatonicKey < 1 || diatonicKey > 12) {
+        throw new Error('Number value must be between 1 and 12')
+      }
+      return { diatonicKey }
+    }),
 
-  private _diatonicType: DiatonicType
+  diatonicType: '3note',
+  setDiatonicType3note: () => set({ diatonicType: '3note' }),
+  setDiatonicType4note: () => set({ diatonicType: '4note' }),
 
-  private _accidental: Accidental
+  accidental: 'b',
+  setAccidentalFlat: () => set({ accidental: 'b' }),
+  setAccidentalSharp: () => set({ accidental: '#' }),
 
-  private _pianoOctobe: number
+  pianoOctobe: 0,
+  setPianoOctobe: (pianoOctobe: number) =>
+    set(() => {
+      if (pianoOctobe < 0 || pianoOctobe > 9) {
+        throw new Error('Number value must be between 0 and 9')
+      }
+      return { pianoOctobe }
+    }),
+}))
 
-  constructor(diatonicKey: number, diatonicType: DiatonicType, accidental: AccidentalType, pianoOctobe: number) {
-    GameSettings.validate(diatonicKey, pianoOctobe)
-    this._diatonicKey = diatonicKey
-    this._diatonicType = diatonicType
-    this._accidental = new Accidental(accidental)
-    this._pianoOctobe = pianoOctobe
-  }
-
-  get diatonicKey(): number {
-    return this._diatonicKey
-  }
-
-  set diatonicKey(diatonicKey: number) {
-    GameSettings.validateDiatonicKey(diatonicKey)
-    this._diatonicKey = diatonicKey
-  }
-
-  get diatonicType(): DiatonicType {
-    return this._diatonicType
-  }
-
-  set diatonicType(diatonicType: DiatonicType) {
-    this._diatonicType = diatonicType
-  }
-
-  get accidental(): Accidental {
-    return this._accidental
-  }
-
-  get pianoOctobe(): number {
-    return this._pianoOctobe
-  }
-
-  set pianoOctobe(pianoOctobe: number) {
-    GameSettings.validateOctobe(pianoOctobe)
-    this._pianoOctobe = pianoOctobe
-  }
-
-  private static validate(diatonicKey: number, pianoOctobe: number) {
-    this.validateDiatonicKey(diatonicKey)
-    this.validateOctobe(pianoOctobe)
-  }
-
-  private static validateDiatonicKey(diatonicKey: number): void {
-    if (diatonicKey < 1 || diatonicKey > 12) {
-      throw new Error('Number value must be between 1 and 12')
-    }
-  }
-
-  private static validateOctobe(pianoOctobe: number) {
-    if (pianoOctobe < 0 || pianoOctobe > 9) {
-      throw new Error('Number value must be between 0 and 9')
-    }
-  }
-}
-
-export default GameSettings
+export default gameSettings

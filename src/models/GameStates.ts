@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import Chord from './Chord'
 
-type gameStatesType = {
+type GameStates = {
   currentChord: Chord
   setCurrentChord: (newChord: Chord) => void
 }
@@ -9,7 +9,7 @@ type gameStatesType = {
 /**
  * リアルタイムに変化する値を管理する
  */
-const gameStates = create<gameStatesType>((set, get) => ({
+const gameStates = create<GameStates>((set) => ({
   currentChord: new Chord(1, ''),
   setCurrentChord: (newChord: Chord): void => set({ currentChord: newChord }),
 }))

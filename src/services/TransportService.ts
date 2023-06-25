@@ -1,34 +1,16 @@
-import { Draw, Master, Part, Synth, Transport } from 'tone'
+import { Draw, Part, Synth, Transport } from 'tone'
 
 export type Pattern = { time: string | number; note: string; velocity: number }[]
 
 class TransportService {
-  private synth: Synth
-
-  private pattern: Pattern = []
-
-  private draw: () => void
-
-  // TODO なんとかする
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor(synth: Synth, pattern: Pattern, draw: () => void = () => {}) {
-    this.synth = synth
-    this.pattern = pattern
-    this.draw = draw
-  }
-
-  createPart() {
+  static createPart(synth: Synth, draw: () => void, pattern: Pattern) {
     TransportService.stop()
     TransportService.partReset()
     const part = new Part((time, value) => {
-      this.synth.triggerAttackRelease(value.note, '0.1', time, value.velocity)
-      if (this.draw) Draw.schedule(this.draw, time)
-    }, this.pattern).start(0)
+      synth.triggerAttackRelease(value.note, '0.1', time, value.velocity)
+      Draw.schedule(draw, time)
+    }, pattern).start(0)
     part.loop = true
-    // console.log(part);
-    // Transport.bpm.value = 120
-    // Master.volume.value = 0
-    // Transport.toggle();
   }
 
   static start() {
@@ -49,6 +31,10 @@ class TransportService {
 
   static toggleTransport() {
     Transport.toggle()
+  }
+
+  static setBpm(bpm: number) {
+    Transport.bpm.value = bpm
   }
 }
 

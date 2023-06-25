@@ -1,6 +1,5 @@
 import { AccidentalType, ChordType, NoteDegree, NoteName } from '../customTypes/musicalTypes'
 import mu from '../utils/MusicalUtil'
-import Accidental from './Accidental'
 
 type ChordStructure = {
   noteNumbers: number[]
@@ -34,13 +33,13 @@ class Chord {
 
   private _chordType: ChordType
 
-  private _accidental: Accidental
+  private _accidental: AccidentalType
 
   constructor(rootNumber: number, chordType: ChordType, accidental: AccidentalType = 'b') {
     Chord.validateRootNumber(rootNumber)
     this._rootNumber = rootNumber
     this._chordType = chordType
-    this._accidental = new Accidental(accidental)
+    this._accidental = accidental
   }
 
   get rootNumber(): number {
@@ -51,7 +50,7 @@ class Chord {
     return this._chordType
   }
 
-  get accidental(): Accidental {
+  get accidental(): AccidentalType {
     return this._accidental
   }
 
@@ -113,17 +112,21 @@ class Chord {
   private convertNoteNumberToName(noteNumber: number): NoteName {
     if (mu.isIn2Octobe(noteNumber)) throw new Error(`Invalid note number: ${noteNumber}`)
     if (noteNumber === 1 || noteNumber === 13) return 'C'
-    if (noteNumber === 2 || noteNumber === 14) return this.accidental.isSharp() ? 'C#' : 'Db'
+    if (noteNumber === 2 || noteNumber === 14) return this.isSharp() ? 'C#' : 'Db'
     if (noteNumber === 3 || noteNumber === 15) return 'D'
-    if (noteNumber === 4 || noteNumber === 16) return this.accidental.isSharp() ? 'D#' : 'Eb'
+    if (noteNumber === 4 || noteNumber === 16) return this.isSharp() ? 'D#' : 'Eb'
     if (noteNumber === 5 || noteNumber === 17) return 'E'
     if (noteNumber === 6 || noteNumber === 18) return 'F'
-    if (noteNumber === 7 || noteNumber === 19) return this.accidental.isSharp() ? 'F#' : 'Gb'
+    if (noteNumber === 7 || noteNumber === 19) return this.isSharp() ? 'F#' : 'Gb'
     if (noteNumber === 8 || noteNumber === 20) return 'G'
-    if (noteNumber === 9 || noteNumber === 21) return this.accidental.isSharp() ? 'G#' : 'Ab'
+    if (noteNumber === 9 || noteNumber === 21) return this.isSharp() ? 'G#' : 'Ab'
     if (noteNumber === 10 || noteNumber === 22) return 'A'
-    if (noteNumber === 11 || noteNumber === 23) return this.accidental.isSharp() ? 'A#' : 'Bb'
+    if (noteNumber === 11 || noteNumber === 23) return this.isSharp() ? 'A#' : 'Bb'
     return 'B' // 12 or 24
+  }
+
+  private isSharp(): boolean {
+    return this.accidental === '#'
   }
 }
 
