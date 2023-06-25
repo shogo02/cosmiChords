@@ -2,9 +2,7 @@ import SynthCreator from '../utils/SynthCreator'
 import ChordGenerator from './ChordGenerator'
 import GameSettings from '../models/GameSettings'
 import TransportService, { Pattern } from './TransportService'
-import GameStates from '../models/GameStates'
-import Chord from '../models/Chord'
-import InputController from '../controllers/Input/InputController'
+import gameStates from '../models/GameStates'
 
 const METRONOME_PATTERN: Pattern = [
   { time: 0, note: 'C6', velocity: 1 },
@@ -18,49 +16,32 @@ class GameService {
 
   private gameSettings: GameSettings
 
-  private gameStates: GameStates
-
   private transportService?: TransportService
 
-  private inputController: InputController
+  private gameStates = gameStates.getState()
 
-  // TODO ↓やり方考える
-  public setChordView: React.Dispatch<React.SetStateAction<Chord | undefined>> | undefined
-
-  private constructor(
-    chordGenerator: ChordGenerator,
-    gameSettings: GameSettings,
-    gameStates: GameStates,
-    inputController: InputController
-  ) {
+  private constructor(chordGenerator: ChordGenerator, gameSettings: GameSettings) {
     this.chordGenerator = chordGenerator
     this.gameSettings = gameSettings
-    this.gameStates = gameStates
-    this.inputController = inputController
   }
 
   static createGameService() {
     const gameSettings = new GameSettings(7, '3note', 'b', 5)
-    const gameState = new GameStates()
     const chordGenerator = new ChordGenerator()
-    const inputController = InputController.createInputController()
-    return new GameService(chordGenerator, gameSettings, gameState, inputController)
+    return new GameService(chordGenerator, gameSettings)
   }
 
   init() {
     this.createPart()
-    this.inputController.init()
   }
 
-  gameStart() {
+  start() {
     this.generateChord()
-    this.setChordView?.(this.gameStates.currentChord)
   }
 
   private createPart() {
     const draw = () => {
       this.generateChord()
-      this.setChordView?.(this.gameStates.currentChord)
     }
     const synth = SynthCreator.createSynth()
     this.transportService = new TransportService(synth, METRONOME_PATTERN, draw)
@@ -70,7 +51,7 @@ class GameService {
   private generateChord() {
     const { diatonicKey, diatonicType, accidental } = this.gameSettings
     this.chordGenerator.createDiatonicValidChords(diatonicKey, diatonicType, accidental.value)
-    this.gameStates.currentChord = this.chordGenerator.getRandomChord()
+    this.gameStates.setCurrentChord(this.chordGenerator.getRandomChord())
   }
 }
 

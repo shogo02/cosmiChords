@@ -1,18 +1,17 @@
+import { create } from 'zustand'
 import Chord from './Chord'
+
+type gameStatesType = {
+  currentChord: Chord
+  setCurrentChord: (newChord: Chord) => void
+}
 
 /**
  * リアルタイムに変化する値を管理する
  */
-class GameStates {
-  private _currentChord: Chord | undefined
+const gameStates = create<gameStatesType>((set, get) => ({
+  currentChord: new Chord(1, ''),
+  setCurrentChord: (newChord: Chord): void => set({ currentChord: newChord }),
+}))
 
-  get currentChord(): Chord | undefined {
-    return this._currentChord
-  }
-
-  set currentChord(chord: Chord | undefined) {
-    this._currentChord = chord
-  }
-}
-
-export default GameStates
+export default gameStates
