@@ -1,7 +1,7 @@
 import Constants from '../constants/constants'
 import { ChordType, DiatonicType } from '../customTypes/musicalTypes'
 
-const { SCALE, PC_KEY, MIDI_NUMBER_TO_NAME } = Constants
+const { SCALE, MIDI_NUMBER_TO_NAME } = Constants
 
 class MusicalUtil {
   /**
@@ -26,6 +26,14 @@ class MusicalUtil {
   static fixedNoteNumber(noteNumber: number) {
     if (MusicalUtil.isIn2Octobe(noteNumber)) throw new Error(`Invalid note number: ${noteNumber}`)
     return noteNumber > 12 ? noteNumber - 12 : noteNumber
+  }
+
+  static isValidMidiNumber(midiNumber: number) {
+    return midiNumber >= 0 && midiNumber <= 127
+  }
+
+  static isValidOctobe(octobe: number) {
+    return Number.isInteger(octobe) && octobe >= 0 && octobe <= 9
   }
 
   /**
@@ -55,25 +63,23 @@ class MusicalUtil {
     return SCALE.MAJOR_SCALSE.map((noteNumber) => noteNumber + key - 1)
   }
 
-  /**
-   * PCキー入力からNoteNumberを取定する
-   */
-  static getNoteNumberFromPcKey(key: string, octobe: number) {
-    if (octobe < 0 || octobe > 9 || !Number.isInteger(octobe)) {
+  static getNoteFromMidiNumber(midiNumber: number, octobe: number) {
+    if (!MusicalUtil.isValidOctobe(octobe)) {
       throw new Error(`Invalid octobe: ${octobe}`)
     }
 
-    const offSet = octobe * 12
-    let index = PC_KEY[0].findIndex((value) => value === key)
-    if (index >= 0) {
-      return MIDI_NUMBER_TO_NAME[index + offSet + 12]
+    if (!MusicalUtil.isValidMidiNumber(midiNumber)) {
+      throw new Error(`Invalid midiNumber: ${midiNumber}`)
     }
 
-    index = PC_KEY[1].findIndex((value) => value === key)
-    if (index >= 0) {
-      return MIDI_NUMBER_TO_NAME[index + offSet]
+    const offSet = octobe * 12
+    const resultMidiNumber = midiNumber + offSet
+
+    if (!MusicalUtil.isValidMidiNumber(resultMidiNumber)) {
+      throw new Error(`Invalid midiNumber: ${resultMidiNumber}`)
     }
-    throw new Error(`Invalid PCkey: ${key}`)
+
+    return MIDI_NUMBER_TO_NAME[resultMidiNumber]
   }
 }
 

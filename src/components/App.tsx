@@ -1,27 +1,19 @@
-import { useEffect, useState } from 'react'
 import KeyBoard from './KeyBoard'
 import Main from './Main'
 import Mixer from './Mixer'
 import Nob from './Nob'
 import Pad from './Pad'
-import GameService from '../services/GameService'
-import Chord from '../models/Chord'
-import PcKeyListener from './PcKeyListner'
-import ViewHandler from '../handlers/ViewHandler'
+import AppService from '../services/AppService'
+import gameStates from '../models/GameStates'
 
-const gameService = GameService.createGameService()
-const viewHandler = new ViewHandler(gameService)
-gameService.init()
+const appService = AppService.createAppservice()
+appService.init()
+appService.start()
 
 function App() {
-  const [chord, setChord] = useState<Chord | undefined>()
+  console.log('app rendering')
 
-  useEffect(() => {
-    gameService.setChordView = setChord
-    gameService.gameStart()
-  }, [])
-
-  const { keyDownHandler, keyUpHandler } = viewHandler.getPcKeyListnerProps()
+  const currentChord = gameStates((state) => state.currentChord)
 
   return (
     <div className="h-screen bg-[#dedede] select-none font-mono">
@@ -31,7 +23,7 @@ function App() {
         </div>
         <div className="basis-full border border-black flex flex-col pt-20 mx-14">
           <div className="h-5/6 border border-black">
-            <Main chord={chord} />
+            <Main chord={currentChord} />
           </div>
           <div className="h-1/6 border border-black">
             <Nob />
@@ -44,7 +36,6 @@ function App() {
       <div className="h-1/4 border border-black">
         <KeyBoard />
       </div>
-      <PcKeyListener keyDownHandler={keyDownHandler} keyUpHandler={keyUpHandler} />
     </div>
   )
 }
