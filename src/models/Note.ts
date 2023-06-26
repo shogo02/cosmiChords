@@ -42,7 +42,7 @@ class Note {
       this.isSharp() ? 'D#' : 'Eb',
       'E',
       'F',
-      this.isSharp() ? 'F#' : 'Ab',
+      this.isSharp() ? 'F#' : 'Gb',
       'G',
       this.isSharp() ? 'G#' : 'Ab',
       'A',

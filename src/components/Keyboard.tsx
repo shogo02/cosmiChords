@@ -26,14 +26,22 @@ const useCountOfVisibleWhiteKeys = (): number => {
 }
 
 function PianoKey({ midiNumber, noteName, isPressed, isBlackKey }: PianoKeyProps) {
+  const whiteKeyClassNames = 'relative h-36 w-10 border border-black flex flex-col items-center rounded-b-lg'
+  const blackKeyClassNames =
+    'absolute h-20 w-7 mx-[-14px] bg-slate-600 z-10 border border-black flex flex-col items-center rounded-b-lg'
+
+  const keyClassNames = isBlackKey ? blackKeyClassNames : whiteKeyClassNames
   const additionalClass = isPressed ? 'bg-sky-600' : ''
-  const keyClassNames = isBlackKey
-    ? `${additionalClass} absolute h-20 w-7 mx-[-14px] bg-slate-600 z-10 border border-black flex justify-center items-end rounded-b-lg`
-    : `${additionalClass} relative h-36 w-10 border border-black flex justify-center items-end rounded-b-lg`
+
+  const textClassNames = isBlackKey ? 'text-white' : 'text-black'
 
   return (
-    <div className={isBlackKey ? 'relative w-0' : 'col-span-1'}>
-      <div className={keyClassNames}>{isPressed ? noteName : midiNumber}</div>
+    <div className={isBlackKey ? 'col-span-1' : 'col-span-1'}>
+      <div className={keyClassNames}>
+        <div className={`${additionalClass} w-full h-full flex justify-center ${textClassNames}`}>
+          <div className="mt-auto">{isPressed ? noteName : midiNumber}</div>
+        </div>
+      </div>
     </div>
   )
 }

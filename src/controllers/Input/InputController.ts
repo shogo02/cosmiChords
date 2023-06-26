@@ -40,19 +40,16 @@ class InputController {
   private initPcKeyAction() {
     this.pcKeyService.setKeySpaceAction(() => {
       TransportService.toggleTransport()
-      console.log('KeyDown: space')
     })
 
     this.pcKeyService.setNormalKeyDownAction((midiNumber: number) => {
       const note = new Note(midiNumber, this.gameSettings?.accidental).getTransposeNote(0, 4)
       this.noteOn(note)
-      console.log(`KeyDown: ${note.identifier}`)
     })
 
     this.pcKeyService.setNormalKeyUpAction((midiNumber: number) => {
       const note = new Note(midiNumber, this.gameSettings?.accidental).getTransposeNote(0, 4)
       this.noteOff(note)
-      console.log(`KeyUp: ${note.identifier}`)
     })
   }
 
