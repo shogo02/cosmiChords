@@ -2,11 +2,17 @@ import InputController from '../controllers/Input/InputController'
 import SynthCreator from '../utils/SynthCreator'
 import GameService from './GameService'
 import TransportService, { Pattern } from './TransportService'
+import gameStates from '../models/GameStates'
+import gameSettings from '../models/GameSettings'
 
 class AppService {
   private gameService: GameService
 
   private inputController: InputController
+
+  private gameStates = gameStates.getState()
+
+  private gameSettings = gameSettings.getState()
 
   private constructor(gameService: GameService, inputController: InputController) {
     this.gameService = gameService
@@ -20,10 +26,9 @@ class AppService {
   }
 
   init() {
-    // this.gameService.init()
-    this.inputController.init()
+    this.gameService.init(this.gameSettings, this.gameStates)
+    this.inputController.init(this.gameSettings, this.gameStates)
     this.createPart()
-    this.inputController.setPcKeyOctobe(4) // TODO 後々可変にする
   }
 
   start() {

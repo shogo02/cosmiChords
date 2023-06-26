@@ -3,7 +3,9 @@ import TransportService from '../../services/TransportService'
 import SynthCreator from '../../utils/SynthCreator'
 import PcKeyHandler from './PcKeyHandler'
 import MidiKeyHandler from './MidiKeyHandler'
-import mu from '../../utils/MusicalUtil'
+import Note from '../../models/Note'
+import { GameSetting } from '../../models/GameSettings'
+import { GameState } from '../../models/GameStates'
 
 class InputController {
   private synthService: SynthService
@@ -12,7 +14,9 @@ class InputController {
 
   private midiKeyService: MidiKeyHandler
 
-  private pcKeyOctobe = 0
+  private gameSettings?: GameSetting
+
+  private gameStates?: GameState
 
   private constructor(synthService: SynthService, pcKeyService: PcKeyHandler, midiKeyService: MidiKeyHandler) {
     this.synthService = synthService
@@ -26,13 +30,11 @@ class InputController {
     return inputController
   }
 
-  setPcKeyOctobe(octobe: number) {
-    this.pcKeyOctobe = octobe
-  }
-
-  init() {
+  init(gameSetting: GameSetting, gameStates: GameState) {
     this.initPcKeyAction()
     this.pcKeyService.init()
+    this.gameSettings = gameSetting
+    this.gameStates = gameStates
   }
 
   private initPcKeyAction() {
@@ -42,16 +44,26 @@ class InputController {
     })
 
     this.pcKeyService.setNormalKeyDownAction((midiNumber: number) => {
-      const noteName = mu.getNoteFromMidiNumber(midiNumber, this.pcKeyOctobe) // TODO 後々オクターブを可変にする
-      this.synthService.noteOn(noteName)
-      console.log(`KeyDown: ${noteName}`)
+      const note = new Note(midiNumber, this.gameSettings?.accidental).getTransposeNote(0, 4)
+      this.noteOn(note)
+      console.log(`KeyDown: ${note.identifier}`)
     })
 
     this.pcKeyService.setNormalKeyUpAction((midiNumber: number) => {
-      const noteName = mu.getNoteFromMidiNumber(midiNumber, this.pcKeyOctobe)
-      this.synthService.noteOff(noteName)
-      console.log(`KeyUp: ${noteName}`)
+      const note = new Note(midiNumber, this.gameSettings?.accidental).getTransposeNote(0, 4)
+      this.noteOff(note)
+      console.log(`KeyUp: ${note.identifier}`)
     })
+  }
+
+  private noteOn(note: Note) {
+    this.synthService.noteOn(note.identifier)
+    this.gameStates?.addPlayingNote(note)
+  }
+
+  private noteOff(note: Note) {
+    this.synthService.noteOff(note.identifier)
+    this.gameStates?.removePlayingNote(note)
   }
 }
 

@@ -1,4 +1,4 @@
-export type AccidentalType = '#' | 'b'
+export type AccidentalType = '' | '#' | 'b'
 export type NoteDegree =
   | 'R'
   | 'm2'
