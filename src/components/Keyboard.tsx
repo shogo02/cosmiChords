@@ -1,57 +1,82 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import Note from '../models/Note'
 
-interface KeyProps {
+type PianoKeyProps = {
   midiNumber: number
-  pcKey: string
+  noteName: string | undefined
+  isPressed: boolean
+  isBlackKey: boolean
 }
 
-// TODO 白鍵黒鍵に分けたい
-function Key(props: KeyProps) {
-  const { midiNumber, pcKey } = props
-  const MIDI_HALF_NOTE_NUMBER = [
-    1, 3, 6, 8, 10, 13, 15, 18, 20, 22, 25, 27, 30, 32, 34, 37, 39, 42, 44, 46, 49, 51, 54, 56, 58, 61, 63, 66, 68, 70, 73, 75,
-    78, 80, 82, 85, 87, 90, 92, 94, 97, 99, 102, 104, 106, 109, 111, 114, 116, 118, 121, 123, 126,
-  ]
-  let addClassName = ''
-  if (MIDI_HALF_NOTE_NUMBER.find((e) => e === midiNumber) != null) {
-    addClassName += 'h-20 w-7 mx-[-14px] bg-slate-600 z-10 '
-  } else {
-    addClassName += 'h-36 w-10  '
+type PianoKeyboardProps = {
+  playingNotes: Note[]
+}
+
+/**
+ * Calculate the number of white keys that can be displayed based on the window width
+ */
+const useCountOfVisibleWhiteKeys = (): number => {
+  const calculateWhiteKeys = (width: number): number => Math.floor(width / 40)
+  const [visibleWhiteKeys, setVisibleWhiteKeys] = useState<number>(calculateWhiteKeys(window.innerWidth))
+
+  useEffect(() => {
+    const updateVisibleWhiteKeys = () => setVisibleWhiteKeys(calculateWhiteKeys(window.innerWidth))
+    window.addEventListener('resize', updateVisibleWhiteKeys)
+    return () => window.removeEventListener('resize', updateVisibleWhiteKeys)
+  }, [])
+
+  return visibleWhiteKeys
+}
+
+function PianoKey({ midiNumber, noteName, isPressed, isBlackKey }: PianoKeyProps) {
+  const additionalClass = isPressed ? 'bg-sky-600' : ''
+  const keyClassNames = isBlackKey
+    ? `${additionalClass} absolute h-20 w-7 mx-[-14px] bg-slate-600 z-10 border border-black flex justify-center items-end rounded-b-lg`
+    : `${additionalClass} relative h-36 w-10 border border-black flex justify-center items-end rounded-b-lg`
+
+  return (
+    <div className={isBlackKey ? 'relative w-0' : 'col-span-1'}>
+      <div className={keyClassNames}>{isPressed ? noteName : midiNumber}</div>
+    </div>
+  )
+}
+
+function Keyboard({ playingNotes }: PianoKeyboardProps) {
+  const visibleWhiteKeys = useCountOfVisibleWhiteKeys()
+  const maxVisibleKeys = visibleWhiteKeys + Math.floor(visibleWhiteKeys / 7) * 5
+
+  let initialMidiNumber = Math.max(60 - Math.floor(maxVisibleKeys / 2), 0)
+  const blackKeyPattern = [1, 3, 6, 8, 10]
+
+  while (blackKeyPattern.includes(initialMidiNumber % 12)) {
+    initialMidiNumber += 1
   }
 
+  const midiNumbers = []
+  for (let i = 0; i < maxVisibleKeys && initialMidiNumber + i <= 127; i += 1) {
+    midiNumbers.push(initialMidiNumber + i)
+  }
+
+  const isBlackKey = (midiNumber: number): boolean => blackKeyPattern.includes(midiNumber % 12)
+
   return (
-    <div className="flex">
-      <div className={`${addClassName} border border-black flex justify-center items-end rounded-b-lg`}>
-        <div className="p-2">
-          {/* {displayNoteName}
-          {pcKey ?? 'none'} */}
-          {midiNumber}
-        </div>
+    <div className="h-full flex justify-center">
+      <div className="flex justify-center">
+        {midiNumbers.map((midiNumber) => {
+          const activeNote = playingNotes.find((note) => note.midiNumber === midiNumber)
+          return (
+            <PianoKey
+              key={midiNumber}
+              midiNumber={midiNumber}
+              noteName={activeNote?.noteName}
+              isPressed={!!activeNote}
+              isBlackKey={isBlackKey(midiNumber)}
+            />
+          )
+        })}
       </div>
     </div>
   )
 }
-
-const Keyboard = React.memo(() => {
-  console.log('keyboard rendering')
-
-  const KEYBOARD_OFFSET = 36
-  const keyboardOctobe = 0
-  const offSet = KEYBOARD_OFFSET + keyboardOctobe * 12
-  const keyBoardMaxNumber = 48
-  const keyArray = [...(Array(keyBoardMaxNumber) as number[])].map((_, i) => i + offSet)
-
-  return (
-    <div className="flex justify-center">
-      <div className="h-36 w-3/4 flex justify-center">
-        {keyArray.map((e) => (
-          <div className="col-span-1" key={e}>
-            <Key midiNumber={e} pcKey="" />
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-})
 
 export default Keyboard

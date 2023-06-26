@@ -18,7 +18,7 @@ function App() {
 
   return (
     <div className="h-screen bg-[#dedede] select-none font-mono">
-      <div className="flex flex-row justify-between h-3/4">
+      <div className="flex flex-row justify-between h-4/5">
         <div className="basis-1/2 border border-black">
           <Pad />
         </div>
@@ -34,8 +34,8 @@ function App() {
           <Mixer />
         </div>
       </div>
-      <div className="h-1/4 border border-black">
-        <Keyboard />
+      <div className="h-1/5 border border-black">
+        <Keyboard playingNotes={playingNotes} />
       </div>
     </div>
   )
