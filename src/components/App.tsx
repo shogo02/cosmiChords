@@ -1,4 +1,4 @@
-import KeyBoard from './KeyBoard'
+import Keyboard from './Keyboard'
 import Main from './Main'
 import Mixer from './Mixer'
 import Nob from './Nob'
@@ -35,7 +35,7 @@ function App() {
         </div>
       </div>
       <div className="h-1/4 border border-black">
-        <KeyBoard />
+        <Keyboard />
       </div>
     </div>
   )

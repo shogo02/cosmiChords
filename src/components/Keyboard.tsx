@@ -32,7 +32,7 @@ function Key(props: KeyProps) {
   )
 }
 
-const KeyBoard = React.memo(() => {
+const Keyboard = React.memo(() => {
   console.log('keyboard rendering')
 
   const KEYBOARD_OFFSET = 36
@@ -54,4 +54,4 @@ const KeyBoard = React.memo(() => {
   )
 })
 
-export default KeyBoard
+export default Keyboard
