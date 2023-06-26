@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Note from '../models/Note'
 
 type PianoKeyProps = {
@@ -9,12 +9,9 @@ type PianoKeyProps = {
 }
 
 type PianoKeyboardProps = {
-  playingNotes: Note[]
+  activeNote: Note[]
 }
 
-/**
- * Calculate the number of white keys that can be displayed based on the window width
- */
 const useCountOfVisibleWhiteKeys = (): number => {
   const calculateWhiteKeys = (width: number): number => Math.floor(width / 40)
   const [visibleWhiteKeys, setVisibleWhiteKeys] = useState<number>(calculateWhiteKeys(window.innerWidth))
@@ -41,7 +38,7 @@ function PianoKey({ midiNumber, noteName, isPressed, isBlackKey }: PianoKeyProps
   )
 }
 
-function Keyboard({ playingNotes }: PianoKeyboardProps) {
+function Keyboard({ activeNote }: PianoKeyboardProps) {
   const visibleWhiteKeys = useCountOfVisibleWhiteKeys()
   const maxVisibleKeys = visibleWhiteKeys + Math.floor(visibleWhiteKeys / 7) * 5
 
@@ -63,13 +60,13 @@ function Keyboard({ playingNotes }: PianoKeyboardProps) {
     <div className="h-full flex justify-center">
       <div className="flex justify-center">
         {midiNumbers.map((midiNumber) => {
-          const activeNote = playingNotes.find((note) => note.midiNumber === midiNumber)
+          const targetActiveNote = activeNote.find((note) => note.midiNumber === midiNumber)
           return (
             <PianoKey
               key={midiNumber}
               midiNumber={midiNumber}
-              noteName={activeNote?.noteName}
-              isPressed={!!activeNote}
+              noteName={targetActiveNote?.noteName}
+              isPressed={!!targetActiveNote}
               isBlackKey={isBlackKey(midiNumber)}
             />
           )

@@ -5,13 +5,13 @@ import Note from '../models/Note'
 
 type MainProp = {
   chord: Chord
-  playingNotes: Note[]
+  activeNote: Note[]
 }
 
 const Main = React.memo((props: MainProp) => {
   console.log('main rendering')
 
-  const { chord, playingNotes } = props
+  const { chord, activeNote } = props
 
   return (
     <div className="border border-black h-full bg-[#000730] text-cyan-200 p-4 flex flex-col items-center">
@@ -22,7 +22,7 @@ const Main = React.memo((props: MainProp) => {
       <div className="text-3xl text-center">{chord.noteNumbers.join(' ')}</div>
       <Score />
       <div className="text-3xl text-center">
-        {playingNotes
+        {activeNote
           .sort((a, b) => a.midiNumber - b.midiNumber)
           .map((e) => e.noteName)
           .join(' ')}

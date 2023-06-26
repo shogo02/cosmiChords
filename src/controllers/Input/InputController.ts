@@ -58,12 +58,12 @@ class InputController {
 
   private noteOn(note: Note) {
     this.synthService.noteOn(note.identifier)
-    this.gameStates?.addPlayingNote(note)
+    this.gameStates?.addActiveNote(note)
   }
 
   private noteOff(note: Note) {
     this.synthService.noteOff(note.identifier)
-    this.gameStates?.removePlayingNote(note)
+    this.gameStates?.removeActiveNote(note)
   }
 }
 
