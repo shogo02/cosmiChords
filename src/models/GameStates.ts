@@ -6,9 +6,9 @@ export type GameState = {
   currentChord: Chord
   setCurrentChord: (newChord: Chord) => void
 
-  playingNotes: Note[]
-  addPlayingNote: (newNote: Note) => void
-  removePlayingNote: (targetNote: Note) => void
+  activeNote: Note[]
+  addActiveNote: (newNote: Note) => void
+  removeActiveNote: (targetNote: Note) => void
 }
 
 /**
@@ -18,19 +18,19 @@ const gameStates = create<GameState>((set) => ({
   currentChord: new Chord(1, ''),
   setCurrentChord: (newChord): void => set({ currentChord: newChord }),
 
-  playingNotes: [],
-  addPlayingNote: (newNote): void =>
+  activeNote: [],
+  addActiveNote: (newNote): void =>
     set((state) => {
-      if (!state.playingNotes.some((note) => note.midiNumber === newNote.midiNumber)) {
+      if (!state.activeNote.some((note) => note.midiNumber === newNote.midiNumber)) {
         return {
-          playingNotes: [...state.playingNotes, newNote],
+          activeNote: [...state.activeNote, newNote],
         }
       }
       return state
     }),
-  removePlayingNote: (targetNote: Note): void =>
+  removeActiveNote: (targetNote: Note): void =>
     set((state) => ({
-      playingNotes: state.playingNotes.filter((note) => note.midiNumber !== targetNote.midiNumber),
+      activeNote: state.activeNote.filter((note) => note.midiNumber !== targetNote.midiNumber),
     })),
 }))
 
