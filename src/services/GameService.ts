@@ -1,13 +1,13 @@
+import { GameSetting } from '../models/GameSettings'
+import { GameState } from '../models/GameStates'
 import ChordGenerator from './ChordGenerator'
-import gameStates from '../models/GameStates'
-import gameSettings from '../models/GameSettings'
 
 class GameService {
   private chordGenerator: ChordGenerator // TODO 今のところインスタンスの使い道がない
 
-  private gameStates = gameStates.getState()
+  private gameSettings?: GameSetting
 
-  private gameSettings = gameSettings.getState()
+  private gameStates?: GameState
 
   private constructor(chordGenerator: ChordGenerator) {
     this.chordGenerator = chordGenerator
@@ -18,13 +18,18 @@ class GameService {
     return new GameService(chordGenerator)
   }
 
-  // init() {}
+  init(gameSetting: GameSetting, gameStates: GameState) {
+    this.gameSettings = gameSetting
+    this.gameStates = gameStates
+  }
 
   start() {
     this.generateChord()
   }
 
   public generateChord() {
+    if (!this.gameSettings) throw new Error('not found gameSettings')
+    if (!this.gameStates) throw new Error('not found gameSettings')
     const { diatonicKey, diatonicType, accidental } = this.gameSettings
     this.chordGenerator.createDiatonicValidChords(diatonicKey, diatonicType, accidental)
     this.gameStates.setCurrentChord(this.chordGenerator.getRandomChord())

@@ -14,6 +14,7 @@ function App() {
   console.log('app rendering')
 
   const currentChord = gameStates((state) => state.currentChord)
+  const playingNotes = gameStates((state) => state.playingNotes)
 
   return (
     <div className="h-screen bg-[#dedede] select-none font-mono">
@@ -23,7 +24,7 @@ function App() {
         </div>
         <div className="basis-full border border-black flex flex-col pt-20 mx-14">
           <div className="h-5/6 border border-black">
-            <Main chord={currentChord} />
+            <Main chord={currentChord} playingNotes={playingNotes} />
           </div>
           <div className="h-1/6 border border-black">
             <Nob />

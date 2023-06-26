@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { AccidentalType, DiatonicType } from '../customTypes/musicalTypes'
 
-type GameSettings = {
+export type GameSetting = {
   diatonicKey: number
   diatonicType: DiatonicType
   accidental: AccidentalType
@@ -11,7 +11,7 @@ type GameSettings = {
 /**
  * ゲーム設定を管理する
  */
-const gameSettings = create<GameSettings>((set) => ({
+const gameSettings = create<GameSetting>((set) => ({
   diatonicKey: 1,
   setDiatonicKey: (diatonicKey: number) =>
     set(() => {
