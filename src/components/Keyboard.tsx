@@ -26,7 +26,7 @@ const useCountOfVisibleWhiteKeys = (): number => {
 }
 
 function PianoKey({ midiNumber, noteName, isPressed, isBlackKey }: PianoKeyProps) {
-  const whiteKeyClassNames = 'relative h-36 w-10 border border-black flex flex-col items-center rounded-b-lg'
+  const whiteKeyClassNames = 'relative h-full w-10 border border-black flex flex-col items-center rounded-b-lg'
   const blackKeyClassNames =
     'absolute h-20 w-7 mx-[-14px] bg-slate-600 z-10 border border-black flex flex-col items-center rounded-b-lg'
 

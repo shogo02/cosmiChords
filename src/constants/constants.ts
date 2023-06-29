@@ -1,3 +1,5 @@
+import { DiatonicKey } from '../customTypes/musicalTypes'
+
 type MidiNumberMap = { [key in number]: string }
 
 class Constants {
@@ -9,6 +11,21 @@ class Constants {
     ['q', '2', 'w', '3', 'e', 'r', '5', 't', '6', 'y', '7', 'u', 'i', '9', 'o', '0', 'p', '@', '^', '[', '¥'],
     ['z', 's', 'x', 'd', 'c', 'v', 'g', 'b', 'h', 'n', 'j', 'm', ',', 'l', '.', ';', '/', '_', ']'],
   ]
+
+  static readonly DIATONIC_KEY_MAP: { [key: number]: DiatonicKey } = {
+    1: 'C',
+    2: 'Db',
+    3: 'D',
+    4: 'Eb',
+    5: 'E',
+    6: 'F',
+    7: 'F#',
+    8: 'G',
+    9: 'Ab',
+    10: 'A',
+    11: 'Bb',
+    12: 'B',
+  }
 
   static readonly MIDI_NUMBER_TO_NAME: MidiNumberMap = {
     0: 'C-1',

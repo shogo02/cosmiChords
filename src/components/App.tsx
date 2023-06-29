@@ -5,6 +5,7 @@ import Nob from './Nob'
 import Pad from './Pad'
 import AppService from '../services/AppService'
 import gameStates from '../models/GameStates'
+import gameSettings from '../models/GameSettings'
 
 const appService = AppService.createAppservice()
 appService.init()
@@ -15,6 +16,7 @@ function App() {
 
   const currentChord = gameStates((state) => state.currentChord)
   const activeNote = gameStates((state) => state.activeNote)
+  const diatonicKeyName = gameSettings((state) => state.diatonicKeyName)
 
   return (
     <div className="h-screen bg-[#dedede] select-none font-mono">
@@ -24,7 +26,7 @@ function App() {
         </div>
         <div className="basis-full border border-black flex flex-col pt-20 mx-14">
           <div className="h-5/6 border border-black">
-            <Main chord={currentChord} activeNote={activeNote} />
+            <Main chord={currentChord} activeNote={activeNote} diatonicKeyName={diatonicKeyName} />
           </div>
           <div className="h-1/6 border border-black">
             <Nob />

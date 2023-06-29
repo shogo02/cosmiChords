@@ -1,17 +1,42 @@
-import React from 'react'
-import Score from './Score'
+import React, { useEffect } from 'react'
+import abcjs from 'abcjs'
 import Chord from '../models/Chord'
 import Note from '../models/Note'
+import { DiatonicKey } from '../customTypes/musicalTypes'
 
 type MainProp = {
   chord: Chord
   activeNote: Note[]
+  diatonicKeyName: DiatonicKey
 }
 
-const Main = React.memo((props: MainProp) => {
-  console.log('main rendering')
+type ScoreProps = {
+  abcNotaion: string[]
+  diatonicKeyName: DiatonicKey
+}
 
-  const { chord, activeNote } = props
+function Score({ abcNotaion, diatonicKeyName }: ScoreProps) {
+  useEffect(() => {
+    abcjs.renderAbc(
+      'abcjs',
+      `K:${diatonicKeyName}
+      L:1/4
+      [${abcNotaion.join('')}]`,
+      {
+        paddingtop: 10,
+        paddingbottom: 10,
+        paddingleft: 80,
+        paddingright: 80,
+        staffwidth: 147,
+      }
+    )
+  }, [abcNotaion, diatonicKeyName])
+
+  return <div id="abcjs" className="" />
+}
+
+const Main = React.memo(({ chord, activeNote, diatonicKeyName }: MainProp) => {
+  console.log('main rendering')
 
   return (
     <div className="border border-black h-full bg-[#000730] text-cyan-200 p-4 flex flex-col items-center">
@@ -20,7 +45,7 @@ const Main = React.memo((props: MainProp) => {
       <div className="text-4xl text-center">{chord.noteNames.join(' ')}</div>
       <div className="text-3xl text-center">{chord.noteDegrees.join(' ')}</div>
       <div className="text-3xl text-center">{chord.noteNumbers.join(' ')}</div>
-      <Score />
+      <Score abcNotaion={chord.abcNotation} diatonicKeyName={diatonicKeyName} />
       <div className="text-3xl text-center">
         {activeNote
           .sort((a, b) => a.midiNumber - b.midiNumber)

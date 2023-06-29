@@ -1,8 +1,12 @@
 import { create } from 'zustand'
-import { AccidentalType, DiatonicType } from '../customTypes/musicalTypes'
+import { AccidentalType, DiatonicKey, DiatonicType } from '../customTypes/musicalTypes'
+import ct from '../constants/constants'
 
 export type GameSetting = {
   diatonicKey: number
+  diatonicKeyName: DiatonicKey
+  setDiatonicKey: (diatonicKey: number) => void
+
   diatonicType: DiatonicType
   accidental: AccidentalType
   pianoOctobe: number
@@ -11,8 +15,11 @@ export type GameSetting = {
 /**
  * ゲーム設定を管理する
  */
-const gameSettings = create<GameSetting>((set) => ({
+const gameSettings = create<GameSetting>((set, get) => ({
   diatonicKey: 1,
+  get diatonicKeyName() {
+    return ct.DIATONIC_KEY_MAP[get().diatonicKey]
+  },
   setDiatonicKey: (diatonicKey: number) =>
     set(() => {
       if (diatonicKey < 1 || diatonicKey > 12) {
@@ -21,7 +28,7 @@ const gameSettings = create<GameSetting>((set) => ({
       return { diatonicKey }
     }),
 
-  diatonicType: '3note',
+  diatonicType: '4note',
   setDiatonicType3note: () => set({ diatonicType: '3note' }),
   setDiatonicType4note: () => set({ diatonicType: '4note' }),
 
