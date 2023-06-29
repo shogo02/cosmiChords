@@ -47,7 +47,7 @@ class MusicalUtil {
     if (degree === 2) return type === '3note' ? 'm' : 'm7'
     if (degree === 3) return type === '3note' ? 'm' : 'm7'
     if (degree === 4) return type === '3note' ? '' : 'M7'
-    if (degree === 5) return type === '3note' ? '' : 'M7'
+    if (degree === 5) return type === '3note' ? '' : '7'
     if (degree === 6) return type === '3note' ? 'm' : 'm7'
     if (degree === 7) return type === '3note' ? 'mb5' : 'm7b5'
     throw new Error(`Invalid degree: ${degree}`)

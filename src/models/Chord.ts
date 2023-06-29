@@ -70,8 +70,19 @@ class Chord {
     return this.getNoteNamesInChord()
   }
 
+  get naturalNoteNames(): NoteName[] {
+    return this.noteNames.map((noteName) => noteName.slice(0, 1) as NoteName)
+  }
+
   get rootNoteName(): NoteName {
     return this.convertNoteNumberToName(this.rootNumber)
+  }
+
+  get abcNotation(): string[] {
+    return this.noteNumbers.map((noteNumber, i) => {
+      const number = this.rootNumber + noteNumber - 1
+      return `${number > 12 ? this.naturalNoteNames[i].toLowerCase() : this.naturalNoteNames[i]}`
+    })
   }
 
   private static validateRootNumber(rootNumber: number): void {

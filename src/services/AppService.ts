@@ -26,6 +26,7 @@ class AppService {
   }
 
   init() {
+    this.gameSettings.setDiatonicKey(1)
     this.gameService.init(this.gameSettings, this.gameStates)
     this.inputController.init(this.gameSettings, this.gameStates)
     this.createPart()
