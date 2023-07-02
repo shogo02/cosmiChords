@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Keyboard from './Keyboard'
 import Main from './Main'
 import Mixer from './Mixer'
@@ -17,6 +18,7 @@ function App() {
   const currentChord = gameStates((state) => state.currentChord)
   const activeNote = gameStates((state) => state.activeNote)
   const diatonicKeyName = gameSettings((state) => state.diatonicKeyName)
+  const midiDeviceNames = gameSettings((state) => state.getMidiDeviceNames)
 
   return (
     <div className="h-screen bg-[#dedede] select-none font-mono">
@@ -34,6 +36,7 @@ function App() {
         </div>
         <div className="basis-1/2 border border-black">
           <Mixer />
+          {midiDeviceNames()}
         </div>
       </div>
       <div className="h-1/5 border border-black">

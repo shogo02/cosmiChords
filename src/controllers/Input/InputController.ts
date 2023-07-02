@@ -7,12 +7,14 @@ import Note from '../../models/Note'
 import { GameSetting } from '../../models/GameSettings'
 import { GameState } from '../../models/GameStates'
 
+export type NoteAction = (midinumber: number) => void
+
 class InputController {
   private synthService: SynthService
 
-  private pcKeyService: PcKeyHandler
+  private pcKeyHandler: PcKeyHandler
 
-  private midiKeyService: MidiKeyHandler
+  private midiKeyHandler: MidiKeyHandler
 
   private gameSettings?: GameSetting
 
@@ -20,8 +22,8 @@ class InputController {
 
   private constructor(synthService: SynthService, pcKeyService: PcKeyHandler, midiKeyService: MidiKeyHandler) {
     this.synthService = synthService
-    this.pcKeyService = pcKeyService
-    this.midiKeyService = midiKeyService
+    this.pcKeyHandler = pcKeyService
+    this.midiKeyHandler = midiKeyService
   }
 
   static createInputController() {
@@ -31,34 +33,49 @@ class InputController {
   }
 
   init(gameSetting: GameSetting, gameStates: GameState) {
-    this.initPcKeyAction()
-    this.pcKeyService.init()
     this.gameSettings = gameSetting
     this.gameStates = gameStates
+    this.initPcKeyAction()
+    this.initMidiKeyboardAction()
+    this.pcKeyHandler.init()
+    this.midiKeyHandler.init(this.gameSettings.addMidiDevice, this.gameSettings.removeMidiDevice)
   }
 
   private initPcKeyAction() {
-    this.pcKeyService.setKeySpaceAction(() => {
+    this.pcKeyHandler.setKeySpaceAction(() => {
       TransportService.toggleTransport()
     })
 
-    this.pcKeyService.setNormalKeyDownAction((midiNumber: number) => {
+    this.pcKeyHandler.setNormalKeyDownAction((midiNumber: number) => {
       const note = new Note(midiNumber, this.gameSettings?.accidental).getTransposeNote(0, 4)
       this.noteOn(note)
     })
 
-    this.pcKeyService.setNormalKeyUpAction((midiNumber: number) => {
+    this.pcKeyHandler.setNormalKeyUpAction((midiNumber: number) => {
       const note = new Note(midiNumber, this.gameSettings?.accidental).getTransposeNote(0, 4)
       this.noteOff(note)
     })
   }
 
-  private noteOn(note: Note) {
+  private initMidiKeyboardAction() {
+    this.midiKeyHandler.setNoteAction(
+      (midiNumber: number) => {
+        const note = new Note(midiNumber)
+        this.noteOn(note)
+      },
+      (midiNumber: number) => {
+        const note = new Note(midiNumber)
+        this.noteOff(note)
+      }
+    )
+  }
+
+  noteOn = (note: Note) => {
     this.synthService.noteOn(note.identifier)
     this.gameStates?.addActiveNote(note)
   }
 
-  private noteOff(note: Note) {
+  noteOff = (note: Note) => {
     this.synthService.noteOff(note.identifier)
     this.gameStates?.removeActiveNote(note)
   }
