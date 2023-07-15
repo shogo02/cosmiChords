@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import Keyboard from './Keyboard'
 import Main from './Main'
 import Mixer from './Mixer'
@@ -13,8 +12,6 @@ appService.init()
 appService.start()
 
 function App() {
-  console.log('app rendering')
-
   const currentChord = gameStates((state) => state.currentChord)
   const activeNote = gameStates((state) => state.activeNote)
   const diatonicKeyName = gameSettings((state) => state.diatonicKeyName)

@@ -35,27 +35,23 @@ function Score({ abcNotaion, diatonicKeyName }: ScoreProps) {
   return <div id="abcjs" className="" />
 }
 
-const Main = React.memo(({ chord, activeNote, diatonicKeyName }: MainProp) => {
-  console.log('main rendering')
-
-  return (
-    <div className="border border-black h-full bg-[#000730] text-cyan-200 p-4 flex flex-col items-center">
-      <div className="text-4xl">1</div>
-      <div className="text-6xl text-center">{chord.chordName}</div>
-      <div className="text-4xl text-center">{chord.noteNames.join(' ')}</div>
-      <div className="text-3xl text-center">{chord.noteDegrees.join(' ')}</div>
-      <div className="text-3xl text-center">{chord.noteNumbers.join(' ')}</div>
-      <Score abcNotaion={chord.abcNotation} diatonicKeyName={diatonicKeyName} />
-      <div className="text-3xl text-center">
-        {activeNote
-          .sort((a, b) => a.midiNumber - b.midiNumber)
-          .map((e) => e.noteName)
-          .join(' ')}
-      </div>
-      {/* <sub>7</sub><sup>(-5)</sup> */}
-      {/* &#9837;	&#9839; */}
+const Main = React.memo(({ chord, activeNote, diatonicKeyName }: MainProp) => (
+  <div className="border border-black h-full bg-[#000730] text-cyan-200 p-4 flex flex-col items-center">
+    <div className="text-4xl">1</div>
+    <div className="text-6xl text-center">{chord.chordName}</div>
+    <div className="text-4xl text-center">{chord.noteNames.join(' ')}</div>
+    <div className="text-3xl text-center">{chord.noteDegrees.join(' ')}</div>
+    <div className="text-3xl text-center">{chord.noteNumbers.join(' ')}</div>
+    <Score abcNotaion={chord.abcNotation} diatonicKeyName={diatonicKeyName} />
+    <div className="text-3xl text-center">
+      {activeNote
+        .sort((a, b) => a.midiNumber - b.midiNumber)
+        .map((e) => e.noteName)
+        .join(' ')}
     </div>
-  )
-})
+    {/* <sub>7</sub><sup>(-5)</sup> */}
+    {/* &#9837;	&#9839; */}
+  </div>
+))
 
 export default Main

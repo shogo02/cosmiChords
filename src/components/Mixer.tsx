@@ -1,9 +1,19 @@
-import React from 'react'
+import { useState } from 'react'
+import VolumeSlider from './parts/VolumeSlider'
 
-const Mixer = React.memo(() => {
-  console.log('mixer rendering')
+function Mixer() {
+  const [volume, setVolume] = useState(50)
 
-  return <div className="p-3 flex flex-col justify-center">Mixer</div>
-})
+  const handleVolumeChange = (newValue: number) => {
+    setVolume(newValue)
+  }
+
+  return (
+    <div className="p-3 flex flex-col justify-center">
+      Mixer
+      <VolumeSlider value={volume} onChange={handleVolumeChange} />
+    </div>
+  )
+}
 
 export default Mixer

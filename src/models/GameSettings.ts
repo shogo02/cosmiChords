@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { Input } from 'webmidi'
 import { AccidentalType, DiatonicKey, DiatonicType } from '../customTypes/musicalTypes'
 import ct from '../constants/constants'
+import ToneController from '../services/ToneController'
 
 export type GameSetting = {
   diatonicKey: number
@@ -24,6 +25,9 @@ export type GameSetting = {
   setMidiDevices: (midiDevices: Input[]) => void
   addMidiDevice: (midiDevice: Input) => void
   removeMidiDevice: (midiDevice: Input) => void
+
+  masterVolume: number
+  setMasterVolume: (masterVolume: number) => void
 }
 
 /**
@@ -73,9 +77,13 @@ const gameSettings = create<GameSetting>((set, get) => ({
     set(() => ({
       midiDevices: get().midiDevices.filter((d) => d.name !== midiDevice.name),
     })),
+
+  masterVolume: 0,
+  setMasterVolume: (masterVolume: number) =>
+    set(() => {
+      ToneController.setMasterVolume(masterVolume)
+      return { masterVolume }
+    }),
 }))
 
 export default gameSettings
-function createSelector(arg0: (state: GameSetting) => Input[], arg1: (midiDevices: any) => any) {
-  throw new Error('Function not implemented.')
-}
