@@ -157,6 +157,11 @@ class Constants {
     126: 'Gb9',
     127: 'G9',
   }
+
+  static readonly MASTER_VOLUME = {
+    max: 0,
+    min: -50
+  }
 }
 
 export default Constants
